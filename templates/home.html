@@ -1,0 +1,310 @@
+{% extends 'base.html' %}
+
+{% block title %}
+AI TaskGenie | Home
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero Section -->
+
+<section class="hero py-5">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <div class="col-lg-6">
+
+                <span class="badge bg-primary mb-3 fs-6">
+                    Powered by Google Gemini AI
+                </span>
+
+                <h1 class="display-3 fw-bold">
+
+                    Beyond Reminders,
+                    <br>
+                    Towards Results.
+
+                </h1>
+
+                <p class="lead mt-4">
+
+                    AI TaskGenie is your intelligent productivity companion
+                    that plans, prioritizes, schedules and helps you finish
+                    tasks before deadlines are missed.
+
+                </p>
+
+                <div class="mt-4">
+
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg px-4">
+
+                        Get Started
+
+                    </a>
+
+                    <a href="#features" class="btn btn-outline-dark btn-lg px-4 ms-2">
+
+                        Learn More
+
+                    </a>
+
+                </div>
+
+                <div class="row mt-5">
+
+                    <div class="col-4 text-center">
+
+                        <h2 class="fw-bold text-primary">
+                            24/7
+                        </h2>
+
+                        <small>AI Support</small>
+
+                    </div>
+
+                    <div class="col-4 text-center">
+
+                        <h2 class="fw-bold text-success">
+                            Smart
+                        </h2>
+
+                        <small>Scheduling</small>
+
+                    </div>
+
+                    <div class="col-4 text-center">
+
+                        <h2 class="fw-bold text-danger">
+                            100%
+                        </h2>
+
+                        <small>Productivity</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 text-center">
+
+                <img
+                    src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png"
+                    class="img-fluid"
+                    width="420">
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- Features -->
+
+<section id="features" class="py-5 bg-white">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Smart Features
+            </h2>
+
+            <p class="text-muted">
+
+                Everything you need to stay productive.
+
+            </p>
+
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-md-3">
+
+                <div class="card h-100 shadow-sm border-0 text-center p-4">
+
+                    <h1>🧠</h1>
+
+                    <h5>AI Planning</h5>
+
+                    <p>
+
+                        AI automatically creates your daily work plan.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100 shadow-sm border-0 text-center p-4">
+
+                    <h1>⚡</h1>
+
+                    <h5>Task Priority</h5>
+
+                    <p>
+
+                        Complete important work before deadlines.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100 shadow-sm border-0 text-center p-4">
+
+                    <h1>📅</h1>
+
+                    <h5>Smart Schedule</h5>
+
+                    <p>
+
+                        Personalized schedules powered by AI.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+
+                <div class="card h-100 shadow-sm border-0 text-center p-4">
+
+                    <h1>🎯</h1>
+
+                    <h5>Goal Tracking</h5>
+
+                    <p>
+
+                        Track progress with intelligent insights.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- How It Works -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                How It Works
+            </h2>
+
+        </div>
+
+        <div class="row text-center">
+
+            <div class="col-md-4">
+
+                <h1>1️⃣</h1>
+
+                <h4>Add Tasks</h4>
+
+                <p>Create tasks with deadlines and priorities.</p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h1>2️⃣</h1>
+
+                <h4>AI Analysis</h4>
+
+                <p>Gemini analyzes workload and generates plans.</p>
+
+            </div>
+
+            <div class="col-md-4">
+
+                <h1>3️⃣</h1>
+
+                <h4>Get Things Done</h4>
+
+                <p>Follow AI suggestions and finish work on time.</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- CTA -->
+
+<section class="py-5 bg-primary text-white">
+
+    <div class="container text-center">
+
+        <h2 class="fw-bold">
+
+            Ready to Become More Productive?
+
+        </h2>
+
+        <p class="mt-3">
+
+            Let AI TaskGenie organize your day.
+
+        </p>
+
+        <a href="#" class="btn btn-light btn-lg mt-3">
+
+            Start Now
+
+        </a>
+
+    </div>
+
+</section>
+
+<!-- Footer -->
+
+<footer class="bg-dark text-white py-4">
+
+    <div class="container text-center">
+
+        <h5>🤖 AI TaskGenie</h5>
+
+        <p>
+
+            Beyond Reminders, Towards Results.
+
+        </p>
+
+        <small>
+
+            © 2026 AI TaskGenie. All Rights Reserved.
+
+        </small>
+
+    </div>
+
+</footer>
+
+{% endblock %}

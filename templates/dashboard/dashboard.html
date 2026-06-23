@@ -1,0 +1,421 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid py-4">
+
+    <!-- Welcome Card -->
+
+    <div class="card shadow border-0 rounded-4 mb-4">
+
+        <div class="card-body p-4">
+
+            <div class="row align-items-center">
+
+                <div class="col-md-8">
+
+                    <h2 class="fw-bold">
+
+                        👋 Welcome, {{ request.user.first_name }}
+
+                    </h2>
+
+                    <p class="text-muted mb-0">
+
+                        Stay focused, complete your tasks and let AI organize your day.
+
+                    </p>
+
+                </div>
+
+                <div class="col-md-4 text-end">
+
+                    <a href="{% url 'add_task' %}" class="btn btn-primary btn-lg">
+
+                        ➕ Add Task
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Statistics -->
+
+    <div class="row g-4">
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h6>Total Tasks</h6>
+
+                    <h2>{{ total_tasks }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h6>Pending</h6>
+
+                    <h2 class="text-warning">
+
+                        {{ pending_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h6>Completed</h6>
+
+                    <h2 class="text-success">
+
+                        {{ completed_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <div class="card shadow-sm border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h6>High Priority</h6>
+
+                    <h2 class="text-danger">
+
+                        {{ high_priority_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Recent Tasks -->
+
+    <div class="row mt-4">
+
+        <div class="col-lg-8">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h4 class="mb-4">
+
+                        📋 Recent Tasks
+
+                    </h4>
+
+                    <table class="table table-hover align-middle">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Task</th>
+
+                                <th>Priority</th>
+
+                                <th>Status</th>
+
+                                <th>Deadline</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                        {% for task in recent_tasks %}
+
+                            <tr>
+
+                                <td>
+
+                                    {{ task.title }}
+
+                                </td>
+
+                                <td>
+
+                                    {% if task.priority == "High" %}
+
+                                        <span class="badge bg-danger">
+
+                                            High
+
+                                        </span>
+
+                                    {% elif task.priority == "Medium" %}
+
+                                        <span class="badge bg-warning text-dark">
+
+                                            Medium
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-primary">
+
+                                            Low
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    {% if task.status == "Completed" %}
+
+                                        <span class="badge bg-success">
+
+                                            Completed
+
+                                        </span>
+
+                                    {% elif task.status == "Pending" %}
+
+                                        <span class="badge bg-warning text-dark">
+
+                                            Pending
+
+                                        </span>
+
+                                    {% else %}
+
+                                        <span class="badge bg-info">
+
+                                            In Progress
+
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+
+                                    {{ task.deadline }}
+
+                                </td>
+
+                            </tr>
+
+                        {% empty %}
+
+                            <tr>
+
+                                <td colspan="4" class="text-center text-muted">
+
+                                    No Tasks Added Yet
+
+                                </td>
+
+                            </tr>
+
+                        {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                    <a href="{% url 'task_list' %}"
+
+                       class="btn btn-outline-primary">
+
+                        View All Tasks
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- AI Assistant -->
+
+        <div class="col-lg-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h4>
+
+                        🤖 AI Assistant
+
+                    </h4>
+
+                    <hr>
+
+                    <p>
+
+                        Good Evening,
+
+                        <strong>
+
+                            {{ request.user.first_name }}
+
+                        </strong>
+
+                    </p>
+
+                    <p class="text-muted">
+
+                        You have
+
+                        <strong>
+
+                            {{ pending_tasks }}
+
+                        </strong>
+
+                        pending task{{ pending_tasks|pluralize }}.
+
+                    </p>
+
+                    <div class="alert alert-warning">
+
+                        {% if high_priority_tasks > 0 %}
+
+                            🔥 You have
+
+                            <strong>
+
+                                {{ high_priority_tasks }}
+
+                            </strong>
+
+                            high priority task{{ high_priority_tasks|pluralize }}.
+
+                        {% else %}
+
+                            🎉 Great Job!
+
+                            No high priority tasks.
+
+                        {% endif %}
+
+                    </div>
+
+                    <button class="btn btn-success w-100">
+
+                        🤖 Generate AI Plan
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- Quick Actions -->
+
+    <div class="row mt-4">
+
+        <div class="col-md-3">
+
+            <a href="{% url 'add_task' %}"
+
+               class="btn btn-primary w-100 p-3">
+
+                ➕ Add Task
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="{% url 'task_list' %}"
+
+               class="btn btn-success w-100 p-3">
+
+                📋 My Tasks
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="#"
+
+               class="btn btn-warning w-100 p-3">
+
+                📊 Analytics
+
+            </a>
+
+        </div>
+
+        <div class="col-md-3">
+
+            <a href="#"
+
+               class="btn btn-dark w-100 p-3">
+
+                🤖 AI Planner
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
