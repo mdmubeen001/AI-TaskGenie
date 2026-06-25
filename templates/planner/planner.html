@@ -1,0 +1,182 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}
+
+AI Planner
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Planner Card -->
+
+    <div class="card shadow border-0 rounded-4">
+
+        <div class="card-body p-5">
+
+            <h2 class="fw-bold">
+
+                🤖 AI Planner
+
+            </h2>
+
+            <p class="text-muted">
+
+                Describe your schedule and let AI create a personalized daily plan.
+
+            </p>
+
+            <form
+                method="POST"
+                id="plannerForm">
+
+                {% csrf_token %}
+
+                <textarea
+
+                    name="prompt"
+
+                    class="form-control mb-3"
+
+                    rows="8"
+
+                    required
+
+                    placeholder="Example:
+
+I have 5 assignments.
+
+Hackathon tomorrow.
+
+Gym at 6 PM.
+
+Exam in 3 days.
+
+Need 8 hours sleep."></textarea>
+
+                <button
+
+                    id="generateBtn"
+
+                    type="submit"
+
+                    class="btn btn-primary btn-lg">
+
+                    ⚡ Generate AI Plan
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    {% if response %}
+
+    <!-- AI Response Card -->
+
+    <div class="card shadow border-0 rounded-4 mt-4">
+
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+            <h5 class="mb-0">
+
+                🤖 AI Generated Plan
+
+            </h5>
+
+            <div>
+
+                <button
+
+                    class="btn btn-light btn-sm me-2"
+
+                    onclick="copyPlan()">
+
+                    📋 Copy
+
+                </button>
+
+                <button
+
+                    class="btn btn-success btn-sm"
+
+                    onclick="window.print()">
+
+                    📄 Download PDF
+
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="card-body">
+
+            <div
+
+                id="aiResponse"
+
+                class="border rounded-3 p-4 bg-light"
+
+                style="
+
+                    white-space: pre-wrap;
+
+                    line-height: 1.9;
+
+                    font-size:16px;
+
+                ">
+
+{{ response }}
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {% endif %}
+
+</div>
+
+
+<script>
+
+function copyPlan(){
+
+    const text = document.getElementById("aiResponse").innerText;
+
+    navigator.clipboard.writeText(text);
+
+    alert("✅ AI Plan copied successfully.");
+
+}
+
+
+// Loading Button
+
+document.getElementById("plannerForm").addEventListener("submit", function(){
+
+    const btn = document.getElementById("generateBtn");
+
+    btn.disabled = true;
+
+    btn.innerHTML = `
+
+        <span class="spinner-border spinner-border-sm me-2"></span>
+
+        Generating AI Plan...
+
+    `;
+
+});
+
+</script>
+
+{% endblock %}

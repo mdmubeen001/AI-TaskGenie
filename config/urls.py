@@ -28,6 +28,9 @@ urlpatterns = [
     path('', home, name='home'),
     path('accounts/', include('accounts.urls')),
     path('tasks/', include('tasks.urls')),
+    path('planner/', include('planner.urls')),
+    path('analytics/', include('analytics.urls')),
+    path('calendar/', include('calendar_app.urls')),
 ]
 
 if settings.DEBUG:

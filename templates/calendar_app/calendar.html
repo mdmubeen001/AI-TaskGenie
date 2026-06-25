@@ -1,0 +1,474 @@
+{% extends 'base_dashboard.html' %}
+{% load custom_filters %}
+
+{% block title %}
+Calendar
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+<!-- Header -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+            📅 Task Calendar
+        </h2>
+
+        <p class="text-muted">
+            Manage your deadlines with a smart calendar view.
+        </p>
+
+    </div>
+
+    <a href="{% url 'add_task' %}" class="btn btn-primary">
+
+        <i class="fa-solid fa-plus"></i>
+
+        Add Task
+
+    </a>
+
+</div>
+
+
+<!-- Navigation -->
+
+<div class="card shadow border-0 rounded-4 mb-4">
+
+    <div class="card-body">
+
+        <div class="row align-items-center">
+
+            <div class="col-md-3 mb-2">
+
+                <a
+                    href="?month={{ previous_month }}&year={{ previous_year }}"
+                    class="btn btn-outline-primary w-100">
+
+                    <i class="fa-solid fa-chevron-left"></i>
+
+                    Previous
+
+                </a>
+
+            </div>
+
+            <div class="col-md-6 mb-2">
+
+                <form method="GET">
+
+                    <div class="row g-2">
+
+                        <div class="col-5">
+
+                            <select
+                                name="month"
+                                class="form-select">
+
+                                {% for month in months %}
+
+                                <option
+                                    value="{{ month.number }}"
+                                    {% if month.number == current_month %}
+                                    selected
+                                    {% endif %}>
+
+                                    {{ month.name }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-4">
+
+                            <select
+                                name="year"
+                                class="form-select">
+
+                                {% for year in years %}
+
+                                <option
+                                    value="{{ year }}"
+                                    {% if year == current_year %}
+                                    selected
+                                    {% endif %}>
+
+                                    {{ year }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+                        <div class="col-3">
+
+                            <button
+                                class="btn btn-primary w-100">
+
+                                View
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+            <div class="col-md-3 mb-2">
+
+                <a
+                    href="?month={{ next_month }}&year={{ next_year }}"
+                    class="btn btn-outline-primary w-100">
+
+                    Next
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Legend -->
+
+<div class="row mb-4">
+
+    <div class="col-lg-3">
+
+        <div class="alert alert-success text-center">
+
+            🟢 Completed
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3">
+
+        <div class="alert alert-warning text-center">
+
+            🟡 Pending
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3">
+
+        <div class="alert alert-primary text-center">
+
+            🔵 In Progress
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3">
+
+        <div class="alert alert-danger text-center">
+
+            🔴 Overdue
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Calendar -->
+
+<div class="card shadow border-0 rounded-4">
+
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+
+        <h4 class="mb-0">
+
+            📅 {{ month_name }} {{ current_year }}
+
+        </h4>
+
+        <a
+            href="?month={{ today.month }}&year={{ today.year }}"
+            class="btn btn-light btn-sm">
+
+            Today
+
+        </a>
+
+    </div>
+
+    <div class="card-body p-0">
+
+        <table class="table table-bordered calendar-table align-middle mb-0">
+
+            <thead class="table-dark">
+
+                <tr>
+
+                    <th>Sunday</th>
+                    <th>Monday</th>
+                    <th>Tuesday</th>
+                    <th>Wednesday</th>
+                    <th>Thursday</th>
+                    <th>Friday</th>
+                    <th>Saturday</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for week in month_days %}
+
+                <tr>
+
+                    {% for day in week %}
+
+                    <td class="calendar-cell {% if day == today %}today-cell{% endif %}">
+
+                        {% if day.month == current_month %}
+
+                        <div class="d-flex justify-content-end">
+
+                            <div class="date-circle">
+
+                                {{ day.day }}
+
+                            </div>
+
+                            {% if day == today %}
+
+                            <span class="badge bg-success">
+
+                                Today
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        {% for task in task_map|get_item:day.day %}
+
+                        <a
+                            href="{% url 'task_detail' task.id %}"
+                            class="text-decoration-none">
+
+                            {% if task.status == "Completed" %}
+
+                            <div class="calendar-task bg-success text-white">
+
+                                ✅ {{ task.title|truncatechars:15 }}
+
+                            </div>
+
+                            {% elif task.status == "Pending" %}
+
+                                {% if task.deadline < today %}
+
+                                <div class="calendar-task bg-danger text-white">
+
+                                    🔴 {{ task.title|truncatechars:15 }}
+
+                                </div>
+
+                                {% else %}
+
+                                <div class="calendar-task bg-warning text-dark">
+
+                                    🟡 {{ task.title|truncatechars:15 }}
+
+                                </div>
+
+                                {% endif %}
+
+                            {% elif task.status == "In Progress" %}
+
+                            <div class="calendar-task bg-primary text-white">
+
+                                📋 {{ task.title|truncatechars:12 }}
+
+                            </div>
+
+                            {% else %}
+
+                            <div class="calendar-task bg-secondary text-white">
+
+                                {{ task.title|truncatechars:15 }}
+
+                            </div>
+
+                            {% endif %}
+
+                        </a>
+
+                        {% empty %}
+
+                        
+
+                        {% endfor %}
+
+                        {% else %}
+
+                        <div class="text-muted opacity-50 p-2">
+
+                            {{ day.day }}
+
+                        </div>
+
+                        {% endif %}
+
+                    </td>
+
+                    {% endfor %}
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- Calendar Summary -->
+
+<div class="row mt-4 calendar-summary">
+
+    <div class="col-lg-3 mb-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h6>
+
+                    📋 Total Tasks
+
+                </h6>
+
+                <h2>
+
+                    {{ total_tasks }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 mb-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h6>
+
+                    ✅ Completed
+
+                </h6>
+
+                <h2 class="text-success">
+
+                    {{ completed_tasks }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 mb-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h6>
+
+                    🟡 Pending
+
+                </h6>
+
+                <h2 class="text-warning">
+
+                    {{ pending_tasks }}
+
+                </h2>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-lg-3 mb-3">
+
+        <div class="card shadow-sm">
+
+            <div class="card-body text-center">
+
+                <h6>
+
+                    🚨 Overdue
+
+                </h6>
+
+                <h2 class="text-danger">
+
+                    {{ overdue_tasks }}
+
+                </h2>
+
+                {% if overdue_tasks > 0 %}
+
+                <small class="text-danger fw-semibold">
+
+                    Complete immediately
+
+                </small>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

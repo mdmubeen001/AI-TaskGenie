@@ -1,0 +1,641 @@
+{% extends 'base_dashboard.html' %}
+
+{% block title %}Analytics{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <!-- Header -->
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+
+                📊 Analytics Dashboard
+
+            </h2>
+
+            <p class="text-muted">
+
+                Monitor your productivity and task performance.
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- Stats Cards -->
+
+    <div class="row">
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>Total Tasks</h6>
+
+                    <h2>{{ total_tasks }}</h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>Completed</h6>
+
+                    <h2 class="text-success">
+
+                        {{ completed_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>Pending</h6>
+
+                    <h2 class="text-warning">
+
+                        {{ pending_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>In Progress</h6>
+
+                    <h2 class="text-primary">
+
+                        {{ in_progress_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>High Priority</h6>
+
+                    <h2 class="text-danger">
+
+                        {{ high_priority_tasks }}
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-2 col-md-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body text-center">
+
+                    <h6>Productivity</h6>
+
+                    <h2 class="text-success">
+
+                        {{ productivity }}%
+
+                    </h2>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Charts -->
+
+    <div class="row">
+
+        <div class="col-lg-8 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h5 class="mb-4">
+
+                        📈 Weekly Productivity
+
+                    </h5>
+
+                    <canvas id="productivityChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="col-lg-4 mb-4">
+
+            <div class="card shadow border-0 rounded-4">
+
+                <div class="card-body">
+
+                    <h5 class="mb-4">
+
+                        🥧 Task Status
+
+                    </h5>
+
+                    <canvas id="statusChart"></canvas>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+<!-- Second Row -->
+
+<div class="row">
+
+    <!-- Recent Tasks -->
+
+    <div class="col-lg-8">
+
+        <div class="card shadow border-0 rounded-4">
+
+            <div class="card-body">
+
+                <h5 class="mb-4">
+
+                    📋 Recent Tasks
+
+                </h5>
+
+                <table class="table table-hover">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Task</th>
+
+                            <th>Status</th>
+
+                            <th>Priority</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for task in recent_tasks %}
+
+                        <tr>
+
+                            <td>{{ task.title }}</td>
+
+                            <td>{{ task.status }}</td>
+
+                            <td>{{ task.priority }}</td>
+
+                        </tr>
+
+                    {% empty %}
+
+                        <tr>
+
+                            <td colspan="3">
+
+                                No Tasks Found
+
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+                <hr>
+
+                <h5 class="mt-4">
+
+                    📅 Upcoming Deadlines
+
+                </h5>
+
+                <ul class="list-group">
+
+                    {% for task in upcoming_tasks %}
+
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                        <div>
+
+                            <strong>{{ task.title }}</strong>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                {{ task.priority }} Priority
+
+                            </small>
+
+                        </div>
+
+                        <span class="badge bg-primary">
+
+                            {{ task.deadline }}
+
+                        </span>
+
+                    </li>
+
+                    {% empty %}
+
+                    <li class="list-group-item text-center">
+
+                        🎉 No Upcoming Deadlines
+
+                    </li>
+
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+ <!-- Productivity -->
+
+<div class="col-lg-4">
+
+    <div class="card shadow border-0 rounded-4">
+
+        <div class="card-body">
+
+            <h5>
+
+                🏆 Productivity Score
+
+            </h5>
+
+            <hr>
+
+            <h1 class="display-4 text-success">
+
+                {{ productivity }}%
+
+            </h1>
+
+            <div class="progress mb-3">
+
+                <div
+
+                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+
+                    role="progressbar"
+
+                    style="width: {{ productivity }}%;">
+
+                </div>
+
+            </div>
+
+            <div class="row text-center">
+
+                <div class="col-6">
+
+                    <h6 class="text-danger">
+
+                        ⚠️ Overdue
+
+                    </h6>
+
+                    <h3>
+
+                        {{ overdue_tasks.count }}
+
+                    </h3>
+
+                </div>
+
+                <div class="col-6">
+
+                    <h6 class="text-primary">
+
+                        📅 Due Today
+
+                    </h6>
+
+                    <h3>
+
+                        {{ today_tasks.count }}
+
+                    </h3>
+
+                </div>
+
+            </div>
+
+            <hr>
+
+            {% if productivity >= 90 %}
+
+            <div class="alert alert-success">
+
+                🌟 Productivity Master
+
+            </div>
+
+            {% elif productivity >= 70 %}
+
+            <div class="alert alert-primary">
+
+                🚀 Excellent Performer
+
+            </div>
+
+            {% elif productivity >= 50 %}
+
+            <div class="alert alert-warning">
+
+                👍 Consistent Worker
+
+            </div>
+
+            {% else %}
+
+            <div class="alert alert-danger">
+
+                💪 Keep Improving
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+    <!-- Achievement Card -->
+
+    <div class="card shadow border-0 rounded-4 mt-4">
+
+        <div class="card-body">
+
+            <h5>
+
+                🏅 Achievement
+
+            </h5>
+
+            <hr>
+
+            {% if productivity >= 90 %}
+
+            <div class="alert alert-success">
+
+                🏆 Productivity Champion
+
+            </div>
+
+            <p class="text-muted">
+
+                Outstanding work! You've completed almost all your tasks.
+
+            </p>
+
+            {% elif productivity >= 70 %}
+
+            <div class="alert alert-primary">
+
+                🚀 Excellent Progress
+
+            </div>
+
+            <p class="text-muted">
+
+                You're maintaining excellent consistency.
+
+            </p>
+
+            {% elif productivity >= 50 %}
+
+            <div class="alert alert-warning">
+
+                👍 Good Momentum
+
+            </div>
+
+            <p class="text-muted">
+
+                Keep completing tasks to improve your productivity.
+
+            </p>
+
+            {% else %}
+
+            <div class="alert alert-danger">
+
+                💪 Time to Focus
+
+            </div>
+
+            <p class="text-muted">
+
+                Start completing pending tasks to unlock achievements.
+
+            </p>
+
+            {% endif %}
+
+            <hr>
+
+            <div class="d-grid">
+
+                <button
+
+                    onclick="window.print()"
+
+                    class="btn btn-dark">
+
+                    📄 Export Analytics PDF
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+new Chart(document.getElementById("productivityChart"),{
+
+    type:"line",
+
+    data:{
+
+        labels:[
+
+        {% for day in weekly_labels %}
+
+        "{{ day }}",
+
+        {% endfor %}
+
+        ],
+
+        datasets:[{
+
+            label:"Tasks Created",
+
+            data:[
+
+            {% for value in weekly_data %}
+
+            {{ value }},
+
+            {% endfor %}
+
+            ],
+
+            borderWidth:3,
+
+            tension:.4,
+
+            fill:true
+
+        }]
+
+    }
+
+});
+
+new Chart(document.getElementById("statusChart"),{
+
+    type:"doughnut",
+
+    data:{
+
+        labels:["Completed","Pending","In Progress"],
+
+        datasets:[{
+
+            data:[
+
+                {{ completed_tasks }},
+
+                {{ pending_tasks }},
+
+                {{ in_progress_tasks }}
+
+            ]
+
+        }]
+
+    }
+
+});
+
+new Chart(document.getElementById("priorityChart"),{
+
+    type:"pie",
+
+    data:{
+
+        labels:[
+
+            "Low",
+
+            "Medium",
+
+            "High"
+
+        ],
+
+        datasets:[{
+
+            data:[
+
+                {{ low_priority }},
+
+                {{ medium_priority }},
+
+                {{ high_priority }}
+
+            ]
+
+        }]
+
+    }
+
+});
+
+</script>
+
+{% endblock %}

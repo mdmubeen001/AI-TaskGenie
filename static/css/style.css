@@ -150,3 +150,345 @@ body{
     border-radius:18px;
 
 }
+
+/* ==========================================
+   CALENDAR UI
+========================================== */
+
+.calendar-table{
+
+    table-layout:fixed;
+
+    margin:0;
+
+    background:#fff;
+
+}
+
+.calendar-table th{
+
+    text-align:center;
+
+    font-weight:700;
+
+    font-size:15px;
+
+    padding:14px;
+
+    letter-spacing:.5px;
+
+}
+
+.calendar-table td{
+
+    min-width:145px;
+
+    padding:0;
+
+}
+
+.calendar-cell{
+
+    height:125px;
+
+    padding:10px;
+
+    vertical-align:top;
+
+    background:#fff;
+
+    position:relative;
+
+    transition:.25s ease;
+
+    overflow:hidden;
+
+}
+
+.calendar-cell:hover{
+
+    background:#f8fbff;
+
+    transform:translateY(-4px);
+
+    box-shadow:0 10px 22px rgba(0,0,0,.10);
+
+    z-index:5;
+
+}
+
+.calendar-cell strong{
+
+    font-size:15px;
+
+}
+
+
+/* =======================
+   DATE CIRCLE
+======================= */
+
+.date-circle{
+
+    width:34px;
+
+    height:34px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-weight:700;
+
+    background:#f3f4f6;
+
+    color:#111827;
+
+    transition:.3s;
+
+}
+
+.today-cell .date-circle{
+
+    background:#22c55e;
+
+    color:white;
+
+}
+
+
+/* =======================
+   TODAY
+======================= */
+
+.today-cell{
+
+    background:#ecfff0;
+
+    border:2px solid #22c55e !important;
+
+}
+
+
+/* =======================
+   TASK BADGES
+======================= */
+
+.calendar-task{
+
+    display:block;
+
+    width:100%;
+
+    margin-top:5px;
+
+    padding:6px 8px;
+
+    border-radius:8px;
+
+    font-size:12px;
+
+    font-weight:600;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+    white-space:nowrap;
+
+    transition:.2s;
+
+}
+
+.calendar-task:hover{
+
+    transform:scale(1.03);
+
+}
+
+.calendar-cell .badge{
+
+    display:block;
+
+    width:100%;
+
+    border-radius:8px;
+
+    padding:6px;
+
+    margin-bottom:5px;
+
+    font-size:12px;
+
+}
+
+
+/* =======================
+   EMPTY DAY
+======================= */
+
+.empty-day{
+
+    text-align:center;
+
+    margin-top:28px;
+
+    color:#c5c5c5;
+
+    font-size:12px;
+
+}
+
+
+/* =======================
+   HEADER
+======================= */
+
+.calendar-header{
+
+    font-size:28px;
+
+    font-weight:700;
+
+}
+
+
+/* =======================
+   NAVIGATION
+======================= */
+
+.calendar-nav .btn{
+
+    height:44px;
+
+    border-radius:10px;
+
+    font-weight:600;
+
+}
+
+
+/* =======================
+   LEGEND
+======================= */
+
+.legend-card{
+
+    border-radius:15px;
+
+    font-weight:600;
+
+    transition:.3s;
+
+}
+
+.legend-card:hover{
+
+    transform:translateY(-3px);
+
+}
+
+
+/* =======================
+   SUMMARY
+======================= */
+
+.calendar-summary .card{
+
+    border:none;
+
+    border-radius:18px;
+
+    transition:.3s;
+
+}
+
+.calendar-summary .card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:0 14px 25px rgba(0,0,0,.10);
+
+}
+
+.calendar-summary h2{
+
+    font-weight:700;
+
+}
+
+
+/* =======================
+   BUTTON
+======================= */
+
+.btn-primary{
+
+    background:linear-gradient(135deg,#2563eb,#3b82f6);
+
+    border:none;
+
+}
+
+.btn-primary:hover{
+
+    opacity:.95;
+
+}
+
+
+/* =======================
+   RESPONSIVE
+======================= */
+
+@media(max-width:992px){
+
+.calendar-cell{
+
+height:105px;
+
+padding:6px;
+
+}
+
+.calendar-task{
+
+font-size:10px;
+
+padding:4px;
+
+}
+
+.date-circle{
+
+width:28px;
+
+height:28px;
+
+font-size:12px;
+
+}
+
+}
+
+@media(max-width:768px){
+
+.calendar-table{
+
+display:block;
+
+overflow-x:auto;
+
+}
+
+.calendar-cell{
+
+height:90px;
+
+}
+
+}
