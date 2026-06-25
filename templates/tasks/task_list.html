@@ -1,26 +1,192 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}
-My Tasks
-{% endblock %}
+{% block title %}My Tasks{% endblock %}
 
 {% block content %}
 
-<div class="container py-5">
+<div class="container-fluid">
+
+    <!-- Header -->
 
     <div class="d-flex justify-content-between align-items-center mb-4">
 
-        <h2>📋 My Tasks</h2>
+        <div>
 
-        <a
-            href="{% url 'add_task' %}"
+            <h2 class="fw-bold">
+
+                📋 My Tasks
+
+            </h2>
+
+            <p class="text-muted">
+
+                Manage all your tasks efficiently.
+
+            </p>
+
+        </div>
+
+        <a href="{% url 'add_task' %}"
+
             class="btn btn-primary">
 
-            + Add Task
+            <i class="fa-solid fa-plus"></i>
+
+            Add Task
 
         </a>
 
     </div>
+
+
+    <!-- Search & Filters -->
+
+    <div class="card shadow-sm border-0 rounded-4 mb-4">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <div class="row g-3">
+
+                    <div class="col-md-4">
+
+                        <input
+
+                            type="text"
+
+                            name="search"
+
+                            class="form-control"
+
+                            placeholder="🔍 Search Task"
+
+                            value="{{ request.GET.search }}">
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+
+                            name="priority"
+
+                            class="form-select">
+
+                            <option value="">
+
+                                All Priority
+
+                            </option>
+
+                            <option value="High">
+
+                                High
+
+                            </option>
+
+                            <option value="Medium">
+
+                                Medium
+
+                            </option>
+
+                            <option value="Low">
+
+                                Low
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+
+                            name="status"
+
+                            class="form-select">
+
+                            <option value="">
+
+                                All Status
+
+                            </option>
+
+                            <option value="Pending">
+
+                                Pending
+
+                            </option>
+
+                            <option value="In Progress">
+
+                                In Progress
+
+                            </option>
+
+                            <option value="Completed">
+
+                                Completed
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <select
+
+                            name="sort"
+
+                            class="form-select">
+
+                            <option value="created">
+
+                                Newest
+
+                            </option>
+
+                            <option value="deadline">
+
+                                Deadline
+
+                            </option>
+
+                            <option value="priority">
+
+                                Priority
+
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="col-md-2">
+
+                        <button
+
+                            class="btn btn-success w-100">
+
+                            Apply
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
 
     {% if tasks %}
 
@@ -28,63 +194,143 @@ My Tasks
 
         {% for task in tasks %}
 
-        <div class="col-md-6 mb-4">
+        <div class="col-lg-6 mb-4">
 
-            <div class="card shadow-sm h-100">
+            <div class="card shadow border-0 rounded-4 h-100">
 
                 <div class="card-body">
 
-                    <h4>
+                    <div class="d-flex justify-content-between">
 
-                        {{ task.title }}
+                        <h4>
 
-                    </h4>
+                            <a href="{% url 'task_detail' task.id %}"
 
-                    <p>
+                                class="text-decoration-none text-dark">
+
+                                {{ task.title }}
+
+                            </a>
+
+                        </h4>
+
+                        {% if task.priority == "High" %}
+
+                        <span class="badge bg-danger">
+
+                            High
+
+                        </span>
+
+                        {% elif task.priority == "Medium" %}
+
+                        <span class="badge bg-warning text-dark">
+
+                            Medium
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="badge bg-primary">
+
+                            Low
+
+                        </span>
+
+                        {% endif %}
+
+                    </div>
+
+                    <p class="text-muted mt-3">
 
                         {{ task.description }}
 
                     </p>
 
-                    <p>
+                    <hr>
 
-                        <strong>Priority:</strong>
+                    <div class="d-flex justify-content-between">
 
-                        {{ task.priority }}
+                        <div>
 
-                    </p>
+                            <small class="text-muted">
 
-                    <p>
+                                Status
 
-                        <strong>Status:</strong>
+                            </small>
 
-                        {{ task.status }}
+                            <br>
 
-                    </p>
+                            {% if task.status == "Completed" %}
 
-                    <p>
+                            <span class="badge bg-success">
 
-                        <strong>Deadline:</strong>
+                                Completed
 
-                        {{ task.deadline }}
+                            </span>
 
-                    </p>
+                            {% elif task.status == "Pending" %}
 
-                    <a
-                        href="{% url 'update_task' task.id %}"
-                        class="btn btn-warning">
+                            <span class="badge bg-warning text-dark">
 
-                        Edit
+                                Pending
 
-                    </a>
+                            </span>
 
-                    <a
-                        href="{% url 'delete_task' task.id %}"
-                        class="btn btn-danger">
+                            {% else %}
 
-                        Delete
+                            <span class="badge bg-info">
 
-                    </a>
+                                In Progress
+
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        <div>
+
+                            <small class="text-muted">
+
+                                Deadline
+
+                            </small>
+
+                            <br>
+
+                            <strong>
+
+                                {{ task.deadline }}
+
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <hr>
+
+                    <div class="d-flex gap-2">
+
+                        <a href="{% url 'update_task' task.id %}"
+
+                            class="btn btn-warning flex-fill">
+
+                            ✏ Edit
+
+                        </a>
+
+                        <a href="{% url 'delete_task' task.id %}"
+
+                            class="btn btn-danger flex-fill">
+
+                            🗑 Delete
+
+                        </a>
+
+                    </div>
 
                 </div>
 
@@ -98,9 +344,37 @@ My Tasks
 
     {% else %}
 
-    <div class="alert alert-info">
+    <div class="card border-0 shadow rounded-4">
 
-        No Tasks Added Yet.
+        <div class="card-body text-center py-5">
+
+            <h1>
+
+                📋
+
+            </h1>
+
+            <h3>
+
+                No Tasks Found
+
+            </h3>
+
+            <p class="text-muted">
+
+                Start by creating your first task.
+
+            </p>
+
+            <a href="{% url 'add_task' %}"
+
+                class="btn btn-primary">
+
+                ➕ Create Task
+
+            </a>
+
+        </div>
 
     </div>
 
