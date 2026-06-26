@@ -31,6 +31,7 @@ urlpatterns = [
     path('planner/', include('planner.urls')),
     path('analytics/', include('analytics.urls')),
     path('calendar/', include('calendar_app.urls')),
+    path('assistant/', include('ai_assistant.urls')),
 ]
 
 if settings.DEBUG:
