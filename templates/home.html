@@ -7,304 +7,333 @@ AI TaskGenie | Home
 {% block content %}
 
 <!-- Hero Section -->
-
-<section class="hero py-5">
-
+<section class="hero py-5 py-lg-6">
     <div class="container">
-
         <div class="row align-items-center">
-
-            <div class="col-lg-6">
-
-                <span class="badge bg-primary mb-3 fs-6">
+            <div class="col-lg-6 mb-5 mb-lg-0">
+                <span class="badge bg-primary-subtle text-primary mb-3 px-3 py-2 rounded-pill">
+                    <i class="fa-solid fa-bolt me-1"></i>
                     Powered by Google Gemini AI
                 </span>
 
-                <h1 class="display-3 fw-bold">
-
+                <h1 class="display-4 fw-bold mb-4">
                     Beyond Reminders,
                     <br>
                     Towards Results.
-
                 </h1>
 
-                <p class="lead mt-4">
-
+                <p class="lead text-muted mb-5">
                     AI TaskGenie is your intelligent productivity companion
                     that plans, prioritizes, schedules and helps you finish
                     tasks before deadlines are missed.
-
                 </p>
 
-                <div class="mt-4">
-
-                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg px-4">
-
+                <div class="d-flex flex-wrap gap-3 mb-5">
+                    <a href="{% url 'signup' %}" class="btn btn-primary btn-lg px-5 py-3 rounded-pill fw-semibold">
+                        <i class="fa-solid fa-rocket me-2"></i>
                         Get Started
-
                     </a>
-
-                    <a href="#features" class="btn btn-outline-dark btn-lg px-4 ms-2">
-
+                    <a href="#features" class="btn btn-outline-primary btn-lg px-5 py-3 rounded-pill fw-semibold">
+                        <i class="fa-solid fa-circle-info me-2"></i>
                         Learn More
-
                     </a>
-
                 </div>
 
-                <div class="row mt-5">
-
-                    <div class="col-4 text-center">
-
-                        <h2 class="fw-bold text-primary">
-                            24/7
-                        </h2>
-
-                        <small>AI Support</small>
-
+                <div class="row g-4">
+                    <div class="col-4">
+                        <div class="text-center p-3 rounded-3 bg-light">
+                            <h2 class="fw-bold text-primary mb-1">24/7</h2>
+                            <small class="text-muted">AI Support</small>
+                        </div>
                     </div>
-
-                    <div class="col-4 text-center">
-
-                        <h2 class="fw-bold text-success">
-                            Smart
-                        </h2>
-
-                        <small>Scheduling</small>
-
+                    <div class="col-4">
+                        <div class="text-center p-3 rounded-3 bg-light">
+                            <h2 class="fw-bold text-success mb-1">Smart</h2>
+                            <small class="text-muted">Scheduling</small>
+                        </div>
                     </div>
-
-                    <div class="col-4 text-center">
-
-                        <h2 class="fw-bold text-danger">
-                            100%
-                        </h2>
-
-                        <small>Productivity</small>
-
+                    <div class="col-4">
+                        <div class="text-center p-3 rounded-3 bg-light">
+                            <h2 class="fw-bold text-danger mb-1">100%</h2>
+                            <small class="text-muted">Productivity</small>
+                        </div>
                     </div>
-
                 </div>
-
             </div>
 
             <div class="col-lg-6 text-center">
-
                 <img
                     src="https://cdn-icons-png.flaticon.com/512/4712/4712027.png"
-                    class="img-fluid"
+                    class="img-fluid hero-image"
                     width="420">
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- Features -->
-
-<section id="features" class="py-5 bg-white">
-
+<!-- Features Section -->
+<section id="features" class="py-5 py-lg-6 bg-white">
     <div class="container">
-
         <div class="text-center mb-5">
-
-            <h2 class="fw-bold">
+            <h2 class="fw-bold display-6 mb-3">
+                <i class="fa-solid fa-star text-warning me-2"></i>
                 Smart Features
             </h2>
-
-            <p class="text-muted">
-
+            <p class="text-muted lead">
                 Everything you need to stay productive.
-
             </p>
-
         </div>
 
         <div class="row g-4">
-
             <div class="col-md-3">
-
-                <div class="card h-100 shadow-sm border-0 text-center p-4">
-
-                    <h1>🧠</h1>
-
-                    <h5>AI Planning</h5>
-
-                    <p>
-
-                        AI automatically creates your daily work plan.
-
-                    </p>
-
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mb-4 mx-auto">
+                            <i class="fa-solid fa-brain fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">AI Planning</h5>
+                        <p class="text-muted">
+                            AI automatically creates your daily work plan.
+                        </p>
+                    </div>
                 </div>
-
             </div>
 
             <div class="col-md-3">
-
-                <div class="card h-100 shadow-sm border-0 text-center p-4">
-
-                    <h1>⚡</h1>
-
-                    <h5>Task Priority</h5>
-
-                    <p>
-
-                        Complete important work before deadlines.
-
-                    </p>
-
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mb-4 mx-auto">
+                            <i class="fa-solid fa-bolt fa-3x text-warning"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Task Priority</h5>
+                        <p class="text-muted">
+                            Complete important work before deadlines.
+                        </p>
+                    </div>
                 </div>
-
             </div>
 
             <div class="col-md-3">
-
-                <div class="card h-100 shadow-sm border-0 text-center p-4">
-
-                    <h1>📅</h1>
-
-                    <h5>Smart Schedule</h5>
-
-                    <p>
-
-                        Personalized schedules powered by AI.
-
-                    </p>
-
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mb-4 mx-auto">
+                            <i class="fa-solid fa-calendar-days fa-3x text-success"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Smart Schedule</h5>
+                        <p class="text-muted">
+                            Personalized schedules powered by AI.
+                        </p>
+                    </div>
                 </div>
-
             </div>
 
             <div class="col-md-3">
-
-                <div class="card h-100 shadow-sm border-0 text-center p-4">
-
-                    <h1>🎯</h1>
-
-                    <h5>Goal Tracking</h5>
-
-                    <p>
-
-                        Track progress with intelligent insights.
-
-                    </p>
-
+                <div class="card h-100 border-0 shadow-sm feature-card">
+                    <div class="card-body p-4 text-center">
+                        <div class="feature-icon mb-4 mx-auto">
+                            <i class="fa-solid fa-bullseye fa-3x text-danger"></i>
+                        </div>
+                        <h5 class="fw-bold mb-3">Goal Tracking</h5>
+                        <p class="text-muted">
+                            Track progress with intelligent insights.
+                        </p>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- How It Works -->
-
-<section class="py-5">
-
+<!-- Why Choose Us Section -->
+<section class="py-5 py-lg-6">
     <div class="container">
-
         <div class="text-center mb-5">
+            <h2 class="fw-bold display-6 mb-3">
+                <i class="fa-solid fa-heart text-danger me-2"></i>
+                Why Choose AI TaskGenie
+            </h2>
+        </div>
 
-            <h2 class="fw-bold">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="p-3 bg-primary-subtle rounded-3">
+                                <i class="fa-solid fa-shield-halved fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Secure & Private</h5>
+                                <p class="text-muted">Your data is protected with enterprise-grade security.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="p-3 bg-success-subtle rounded-3">
+                                <i class="fa-solid fa-infinity fa-2x text-success"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Unlimited Tasks</h5>
+                                <p class="text-muted">Add as many tasks as you need without restrictions.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="card-body p-4">
+                        <div class="d-flex align-items-start gap-3">
+                            <div class="p-3 bg-warning-subtle rounded-3">
+                                <i class="fa-solid fa-clock fa-2x text-warning"></i>
+                            </div>
+                            <div>
+                                <h5 class="fw-bold mb-2">Time Saving</h5>
+                                <p class="text-muted">AI automates planning so you can focus on execution.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- AI Features Section -->
+<section class="py-5 py-lg-6 bg-white">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6 mb-3">
+                <i class="fa-solid fa-microchip text-info me-2"></i>
+                AI-Powered Features
+            </h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-5">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-robot fa-4x text-primary"></i>
+                        </div>
+                        <h3 class="fw-bold mb-3">AI Assistant</h3>
+                        <p class="text-muted mb-4">
+                            Chat with our AI assistant to get help with task management, productivity tips, and more.
+                        </p>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Natural language processing
+                            </li>
+                            <li class="mb-2">
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Task suggestions
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Productivity insights
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-5">
+                        <div class="mb-4">
+                            <i class="fa-solid fa-diagram-project fa-4x text-success"></i>
+                        </div>
+                        <h3 class="fw-bold mb-3">Smart Analytics</h3>
+                        <p class="text-muted mb-4">
+                            Get detailed insights into your productivity patterns and track your progress over time.
+                        </p>
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Task completion rates
+                            </li>
+                            <li class="mb-2">
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Time tracking
+                            </li>
+                            <li>
+                                <i class="fa-solid fa-check text-success me-2"></i>
+                                Performance reports
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works Section -->
+<section id="how-it-works" class="py-5 py-lg-6">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h2 class="fw-bold display-6 mb-3">
+                <i class="fa-solid fa-list-ol text-dark me-2"></i>
                 How It Works
             </h2>
-
         </div>
 
-        <div class="row text-center">
-
+        <div class="row g-4">
             <div class="col-md-4">
-
-                <h1>1️⃣</h1>
-
-                <h4>Add Tasks</h4>
-
-                <p>Create tasks with deadlines and priorities.</p>
-
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle">
+                        <span class="fw-bold">1</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">Add Tasks</h4>
+                    <p class="text-muted">Create tasks with deadlines and priorities.</p>
+                </div>
             </div>
 
             <div class="col-md-4">
-
-                <h1>2️⃣</h1>
-
-                <h4>AI Analysis</h4>
-
-                <p>Gemini analyzes workload and generates plans.</p>
-
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle">
+                        <span class="fw-bold">2</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">AI Analysis</h4>
+                    <p class="text-muted">Gemini analyzes workload and generates plans.</p>
+                </div>
             </div>
 
             <div class="col-md-4">
-
-                <h1>3️⃣</h1>
-
-                <h4>Get Things Done</h4>
-
-                <p>Follow AI suggestions and finish work on time.</p>
-
+                <div class="text-center">
+                    <div class="step-number mx-auto mb-4 d-flex align-items-center justify-content-center rounded-circle">
+                        <span class="fw-bold">3</span>
+                    </div>
+                    <h4 class="fw-bold mb-3">Get Things Done</h4>
+                    <p class="text-muted">Follow AI suggestions and finish work on time.</p>
+                </div>
             </div>
-
         </div>
-
     </div>
-
 </section>
 
-<!-- CTA -->
-
-<section class="py-5 bg-primary text-white">
-
+<!-- CTA Section -->
+<section class="py-5 py-lg-6 bg-primary text-white">
     <div class="container text-center">
-
-        <h2 class="fw-bold">
-
+        <h2 class="fw-bold display-5 mb-4">
             Ready to Become More Productive?
-
         </h2>
-
-        <p class="mt-3">
-
+        <p class="lead mb-5 opacity-90">
             Let AI TaskGenie organize your day.
-
         </p>
-
-        <a href="#" class="btn btn-light btn-lg mt-3">
-
+        <a href="{% url 'signup' %}" class="btn btn-light btn-lg px-5 py-3 rounded-pill fw-semibold">
+            <i class="fa-solid fa-play me-2"></i>
             Start Now
-
         </a>
-
     </div>
-
 </section>
-
-<!-- Footer -->
-
-<footer class="bg-dark text-white py-4">
-
-    <div class="container text-center">
-
-        <h5>🤖 AI TaskGenie</h5>
-
-        <p>
-
-            Beyond Reminders, Towards Results.
-
-        </p>
-
-        <small>
-
-            © 2026 AI TaskGenie. All Rights Reserved.
-
-        </small>
-
-    </div>
-
-</footer>
 
 {% endblock %}

@@ -1,220 +1,145 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}
-Settings
-{% endblock %}
+{% block title %}Settings{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
-
     <!-- Header -->
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-
-            <h2 class="fw-bold">
-                ⚙️ Settings
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-gear text-primary me-2"></i>Settings
             </h2>
-
-            <p class="text-muted">
-                Manage your account preferences and security.
-            </p>
-
+            <p class="text-muted mb-0">Manage your account preferences and security.</p>
         </div>
-
     </div>
 
-    <div class="row">
-
-        <!-- Left -->
-
+    <div class="row g-4">
+        <!-- Left Column -->
         <div class="col-lg-4">
-
-            <!-- Account -->
-
+            <!-- Account Card -->
             <div class="card shadow border-0 rounded-4 mb-4">
-
-                <div class="card-header">
-
-                    <strong>
-                        👤 Account
-                    </strong>
-
+                <div class="card-header bg-light border-0 p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-user text-primary me-2"></i>Account
+                    </h5>
                 </div>
-
-                <div class="card-body">
-
-                    <p>
-                        <strong>Username</strong><br>
-                        {{ request.user.username }}
-                    </p>
-
-                    <p>
-                        <strong>Email</strong><br>
-                        {{ request.user.email }}
-                    </p>
-
-                    <a href="{% url 'profile' %}"
-                       class="btn btn-primary w-100">
-
-                        Edit Profile
-
+                <div class="card-body p-4">
+                    <div class="mb-3">
+                        <p class="fw-semibold mb-0">Username</p>
+                        <p class="text-muted mb-0">{{ request.user.username }}</p>
+                    </div>
+                    <div class="mb-4">
+                        <p class="fw-semibold mb-0">Email</p>
+                        <p class="text-muted mb-0">{{ request.user.email }}</p>
+                    </div>
+                    <a href="{% url 'profile' %}" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-edit me-2"></i>Edit Profile
                     </a>
-
                 </div>
-
             </div>
 
-            <!-- Security -->
-
+            <!-- Security Card -->
             <div class="card shadow border-0 rounded-4">
-
-                <div class="card-header">
-
-                    <strong>
-                        🔐 Security
-                    </strong>
-
+                <div class="card-header bg-light border-0 p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-shield-halved text-primary me-2"></i>Security
+                    </h5>
                 </div>
-
-                <div class="card-body">
-
-                <button
-                   class="btn btn-outline-dark w-100 mb-2"
-                   disabled>
-
-                  🔒 Change Password
-                  <small>(Coming Soon)</small>
-
-                </button>
-
-                    <a href="{% url 'logout' %}"
-                       class="btn btn-outline-danger w-100">
-
-                        Logout
-
+                <div class="card-body p-4">
+                    <button class="btn btn-outline-dark w-100 mb-2" disabled>
+                        <i class="fa-solid fa-lock me-2"></i>Change Password
+                        <small class="ms-1">(Coming Soon)</small>
+                    </button>
+                    <a href="{% url 'logout' %}" class="btn btn-outline-danger w-100">
+                        <i class="fa-solid fa-right-from-bracket me-2"></i>Logout
                     </a>
-
                 </div>
-
             </div>
-
         </div>
 
-        <!-- Right -->
-
+        <!-- Right Column -->
         <div class="col-lg-8">
-
-            <!-- Preferences -->
-
+            <!-- Preferences Card -->
             <div class="card shadow border-0 rounded-4 mb-4">
-
-                <div class="card-header">
-
-                    <strong>
-                        🎨 Preferences
-                    </strong>
-
+                <div class="card-header bg-light border-0 p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-palette text-primary me-2"></i>Preferences
+                    </h5>
                 </div>
-
-                <div class="card-body">
-
-                    <div class="form-check form-switch mb-3">
-
-                        <input class="form-check-input"
-                               type="checkbox"
-                               checked>
-
-                        <label class="form-check-label">
-
-                            Dark Mode
-
+                <div class="card-body p-4">
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" id="darkModeToggle">
+                        <label class="form-check-label fw-semibold" for="darkModeToggle">
+                            <i class="fa-solid fa-moon text-primary me-2"></i>Dark Mode
                         </label>
-
                     </div>
-
-                    <div class="form-check form-switch mb-3">
-
-                        <input class="form-check-input"
-                               type="checkbox"
-                               checked>
-
-                        <label class="form-check-label">
-
-                            Email Notifications
-
+                    <div class="form-check form-switch mb-4">
+                        <input class="form-check-input" type="checkbox" id="emailNotificationsToggle" checked>
+                        <label class="form-check-label fw-semibold" for="emailNotificationsToggle">
+                            <i class="fa-solid fa-envelope text-primary me-2"></i>Email Notifications
                         </label>
-
                     </div>
-
                     <div class="form-check form-switch">
-
-                        <input class="form-check-input"
-                               type="checkbox">
-
-                        <label class="form-check-label">
-
-                            Browser Notifications
-
+                        <input class="form-check-input" type="checkbox" id="browserNotificationsToggle">
+                        <label class="form-check-label fw-semibold" for="browserNotificationsToggle">
+                            <i class="fa-solid fa-bell text-primary me-2"></i>Browser Notifications
                         </label>
-
                     </div>
-
                 </div>
-
             </div>
 
-            <!-- Danger Zone -->
-           <div class="card border-danger shadow rounded-4">
-
-                 <div class="card-header bg-danger text-white">
-
-                   <strong>
-                     ⚠️ Danger Zone
-                   </strong>
-
-                 </div>
-
-               <div class="card-body">
-
-                  <p class="text-muted">
-
-                       These actions cannot be undone.
-
-                  </p>
-
-                <a href="{% url 'delete_all_chats' %}"
-                    class="btn btn-outline-warning me-2"
-                     onclick="return confirm('Delete all AI chats?');">
-    
-                   🗑 Delete All Chats
-
-                 </a>
-
-                 <a href="{% url 'delete_all_tasks' %}"
-                    class="btn btn-outline-danger"
-                    onclick="return confirm('Delete all tasks?');">
-
-                 🗑 Delete All Tasks
-
-                  </a>
-
-                 <a href="{% url 'delete_account' %}"
-                    class="btn btn-danger mt-3">
-                    
-                    🗑 Delete Account
-
-                 </a>
-
+            <!-- Danger Zone Card -->
+            <div class="card border-danger shadow rounded-4">
+                <div class="card-header bg-danger text-white p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>Danger Zone
+                    </h5>
                 </div>
-
-             </div>
+                <div class="card-body p-4">
+                    <p class="text-muted mb-4">
+                        These actions cannot be undone. Please proceed with caution.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-3">
+                        <a href="{% url 'delete_all_chats' %}" 
+                           class="btn btn-outline-warning px-4" 
+                           onclick="return confirm('Delete all AI chats?');">
+                            <i class="fa-solid fa-message-slash me-2"></i>Delete All Chats
+                        </a>
+                        <a href="{% url 'delete_all_tasks' %}" 
+                           class="btn btn-outline-danger px-4" 
+                           onclick="return confirm('Delete all tasks?');">
+                            <i class="fa-solid fa-trash-list me-2"></i>Delete All Tasks
+                        </a>
+                    </div>
+                    <a href="{% url 'delete_account' %}" class="btn btn-danger px-4">
+                        <i class="fa-solid fa-trash-can me-2"></i>Delete Account
+                    </a>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
 
+<script>
+// Initialize dark mode toggle
+document.addEventListener('DOMContentLoaded', function() {
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    if (darkModeToggle) {
+        if (localStorage.getItem('darkMode') === 'true') {
+            darkModeToggle.checked = true;
+        }
+        
+        darkModeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                localStorage.setItem('darkMode', 'true');
+                document.body.classList.add('dark-mode');
+            } else {
+                localStorage.setItem('darkMode', 'false');
+                document.body.classList.remove('dark-mode');
+            }
+        });
+    }
+});
+</script>
 {% endblock %}

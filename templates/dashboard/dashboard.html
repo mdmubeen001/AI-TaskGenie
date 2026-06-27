@@ -7,411 +7,241 @@
 <div class="container-fluid py-4">
 
     <!-- Welcome Card -->
-
-    <div class="card shadow border-0 rounded-4 mb-4">
-
-        <div class="card-body p-4">
-
+    <div class="card shadow border-0 rounded-4 mb-4 welcome-card">
+        <div class="card-body p-5">
             <div class="row align-items-center">
-
                 <div class="col-md-8">
-
-                    <h2 class="fw-bold">
-
-                        👋 Welcome, {{ request.user.first_name }}
-
+                    <h2 class="fw-bold mb-2">
+                        <i class="fa-solid fa-hand-wave text-primary me-2"></i> Welcome back, {{ request.user.first_name }}!
                     </h2>
-
                     <p class="text-muted mb-0">
-
                         Stay focused, complete your tasks and let AI organize your day.
-
                     </p>
-
                 </div>
-
                 <div class="col-md-4 text-end">
-
-                    <a href="{% url 'add_task' %}" class="btn btn-primary btn-lg">
-
-                        ➕ Add Task
-
+                    <a href="{% url 'add_task' %}" class="btn btn-primary btn-lg px-5 py-3">
+                        <i class="fa-solid fa-plus me-2"></i> Add Task
                     </a>
-
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-
-
-    <!-- Statistics -->
-
-    <div class="row g-4">
-
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-4">
         <div class="col-md-3">
-
-            <div class="card shadow-sm border-0 rounded-4">
-
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-total">
                 <div class="card-body">
-
-                    <h6>Total Tasks</h6>
-
-                    <h2>{{ total_tasks }}</h2>
-
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Total Tasks</h6>
+                            <h2 class="fw-bold">{{ total_tasks }}</h2>
+                        </div>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="fa-solid fa-list-check fa-xl"></i>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
         <div class="col-md-3">
-
-            <div class="card shadow-sm border-0 rounded-4">
-
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-pending">
                 <div class="card-body">
-
-                    <h6>Pending</h6>
-
-                    <h2 class="text-warning">
-
-                        {{ pending_tasks }}
-
-                    </h2>
-
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Pending</h6>
+                            <h2 class="fw-bold text-warning">{{ pending_tasks }}</h2>
+                        </div>
+                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="fa-solid fa-clock fa-xl"></i>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
         <div class="col-md-3">
-
-            <div class="card shadow-sm border-0 rounded-4">
-
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-completed">
                 <div class="card-body">
-
-                    <h6>Completed</h6>
-
-                    <h2 class="text-success">
-
-                        {{ completed_tasks }}
-
-                    </h2>
-
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">Completed</h6>
+                            <h2 class="fw-bold text-success">{{ completed_tasks }}</h2>
+                        </div>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                            <i class="fa-solid fa-check-double fa-xl"></i>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
         <div class="col-md-3">
-
-            <div class="card shadow-sm border-0 rounded-4">
-
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-high">
                 <div class="card-body">
-
-                    <h6>High Priority</h6>
-
-                    <h2 class="text-danger">
-
-                        {{ high_priority_tasks }}
-
-                    </h2>
-
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h6 class="text-muted mb-1">High Priority</h6>
+                            <h2 class="fw-bold text-danger">{{ high_priority_tasks }}</h2>
+                        </div>
+                        <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                            <i class="fa-solid fa-flag fa-xl"></i>
+                        </div>
+                    </div>
                 </div>
-
             </div>
-
         </div>
-
     </div>
 
-
-
-    <!-- Recent Tasks -->
-
-    <div class="row mt-4">
-
+    <!-- Main Content Row -->
+    <div class="row g-4 mb-4">
         <div class="col-lg-8">
-
             <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body">
-
-                    <h4 class="mb-4">
-
-                        📋 Recent Tasks
-
-                    </h4>
-
-                    <table class="table table-hover align-middle">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Task</th>
-
-                                <th>Priority</th>
-
-                                <th>Status</th>
-
-                                <th>Deadline</th>
-
-                            </tr>
-
-                        </thead>
-
-                        <tbody>
-
-                        {% for task in recent_tasks %}
-
-                            <tr>
-
-                                <td>
-
-                                    {{ task.title }}
-
-                                </td>
-
-                                <td>
-
-                                    {% if task.priority == "High" %}
-
-                                        <span class="badge bg-danger">
-
-                                            High
-
-                                        </span>
-
-                                    {% elif task.priority == "Medium" %}
-
-                                        <span class="badge bg-warning text-dark">
-
-                                            Medium
-
-                                        </span>
-
-                                    {% else %}
-
-                                        <span class="badge bg-primary">
-
-                                            Low
-
-                                        </span>
-
-                                    {% endif %}
-
-                                </td>
-
-                                <td>
-
-                                    {% if task.status == "Completed" %}
-
-                                        <span class="badge bg-success">
-
-                                            Completed
-
-                                        </span>
-
-                                    {% elif task.status == "Pending" %}
-
-                                        <span class="badge bg-warning text-dark">
-
-                                            Pending
-
-                                        </span>
-
-                                    {% else %}
-
-                                        <span class="badge bg-info">
-
-                                            In Progress
-
-                                        </span>
-
-                                    {% endif %}
-
-                                </td>
-
-                                <td>
-
-                                    {{ task.deadline }}
-
-                                </td>
-
-                            </tr>
-
-                        {% empty %}
-
-                            <tr>
-
-                                <td colspan="4" class="text-center text-muted">
-
-                                    No Tasks Added Yet
-
-                                </td>
-
-                            </tr>
-
-                        {% endfor %}
-
-                        </tbody>
-
-                    </table>
-
-                    <a href="{% url 'task_list' %}"
-
-                       class="btn btn-outline-primary">
-
-                        View All Tasks
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-
-
-        <!-- AI Assistant -->
-
-        <div class="col-lg-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body">
-
-                    <h4>
-
-                        🤖 AI Assistant
-
-                    </h4>
-
-                    <hr>
-
-                    <p>
-
-                        Good Evening,
-
-                        <strong>
-
-                            {{ request.user.first_name }}
-
-                        </strong>
-
-                    </p>
-
-                    <p class="text-muted">
-
-                        You have
-
-                        <strong>
-
-                            {{ pending_tasks }}
-
-                        </strong>
-
-                        pending task{{ pending_tasks|pluralize }}.
-
-                    </p>
-
-                    <div class="alert alert-warning">
-
-                        {% if high_priority_tasks > 0 %}
-
-                            🔥 You have
-
-                            <strong>
-
-                                {{ high_priority_tasks }}
-
-                            </strong>
-
-                            high priority task{{ high_priority_tasks|pluralize }}.
-
-                        {% else %}
-
-                            🎉 Great Job!
-
-                            No high priority tasks.
-
-                        {% endif %}
-
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h4 class="mb-0 fw-bold">
+                            <i class="fa-solid fa-list-check text-primary me-2"></i> Recent Tasks
+                        </h4>
+                        <a href="{% url 'task_list' %}" class="btn btn-outline-primary btn-sm">
+                            <i class="fa-solid fa-arrow-right me-1"></i> View All
+                        </a>
                     </div>
 
-                    <button class="btn btn-success w-100">
-
-                        🤖 Generate AI Plan
-
-                    </button>
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Priority</th>
+                                    <th>Status</th>
+                                    <th>Deadline</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for task in recent_tasks %}
+                                <tr>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="task-dot me-3"></div>
+                                            <div>
+                                                <h6 class="mb-0">{{ task.title }}</h6>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {% if task.priority == "High" %}
+                                            <span class="badge bg-danger bg-opacity-10 text-danger">
+                                                <i class="fa-solid fa-flag me-1"></i> High
+                                            </span>
+                                        {% elif task.priority == "Medium" %}
+                                            <span class="badge bg-warning bg-opacity-10 text-warning">
+                                                <i class="fa-solid fa-flag me-1"></i> Medium
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-primary bg-opacity-10 text-primary">
+                                                <i class="fa-solid fa-flag me-1"></i> Low
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if task.status == "Completed" %}
+                                            <span class="badge bg-success bg-opacity-10 text-success">
+                                                <i class="fa-solid fa-check me-1"></i> Completed
+                                            </span>
+                                        {% elif task.status == "Pending" %}
+                                            <span class="badge bg-warning bg-opacity-10 text-warning">
+                                                <i class="fa-solid fa-clock me-1"></i> Pending
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-info bg-opacity-10 text-info">
+                                                <i class="fa-solid fa-spinner me-1"></i> In Progress
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        <i class="fa-solid fa-calendar text-muted me-2"></i>{{ task.deadline }}
+                                    </td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="4" class="text-center py-5 text-muted">
+                                        <i class="fa-solid fa-inbox fa-3x mb-3"></i>
+                                        <p class="mb-0">No Tasks Added Yet</p>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
                 </div>
+            </div>
+        </div>
 
+        <!-- Right Column: AI & Productivity -->
+        <div class="col-lg-4">
+            <!-- Productivity Card -->
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h4 class="mb-4 fw-bold">
+                        <i class="fa-solid fa-chart-line text-primary me-2"></i> Your Productivity
+                    </h4>
+                    <div class="progress mb-3">
+                        {% widthratio completed_tasks total_tasks 100 as comp_percent %}
+                        <div class="progress-bar bg-gradient" role="progressbar"
+                             style="width: {{ comp_percent }}%"
+                             aria-valuenow="{{ comp_percent }}"
+                             aria-valuemin="0"
+                             aria-valuemax="100">
+                            {{ comp_percent }}%
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="text-muted">Completed</span>
+                        <span class="text-success fw-bold">{{ comp_percent }}%</span>
+                    </div>
+                </div>
             </div>
 
-        </div>
+            <!-- AI Recommendation Card -->
+            <div class="card shadow border-0 rounded-4 mb-4 ai-card">
+                <div class="card-body p-4">
+                    <h4 class="mb-3 fw-bold">
+                        <i class="fa-solid fa-robot text-primary me-2"></i> AI Recommendation
+                    </h4>
+                    <p class="text-muted mb-3">
+                        {% if high_priority_tasks > 0 %}
+                        You have <strong class="text-danger">{{ high_priority_tasks }}</strong> high priority task{{ high_priority_tasks|pluralize }}—consider tackling them first for maximum productivity.
+                        {% else %}
+                        Excellent job keeping up with your tasks! Consider planning tomorrow's agenda to stay ahead.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'ai_planner' %}" class="btn btn-primary w-100">
+                        <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Generate AI Plan
+                    </a>
+                </div>
+            </div>
 
-    </div>
-
-
-
-    <!-- Quick Actions -->
-
-    <div class="row mt-4">
-
-        <div class="col-md-3">
-
-            <a href="{% url 'add_task' %}"
-
-               class="btn btn-primary w-100 p-3">
-
-                ➕ Add Task
-
-            </a>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <a href="{% url 'task_list' %}"
-
-               class="btn btn-success w-100 p-3">
-
-                📋 My Tasks
-
-            </a>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <a href="#"
-
-               class="btn btn-warning w-100 p-3">
-
-                📊 Analytics
-
-            </a>
-
-        </div>
-
-        <div class="col-md-3">
-
-            <a href="#"
-
-               class="btn btn-dark w-100 p-3">
-
-                🤖 AI Planner
-
-            </a>
-
+            <!-- Quick Actions -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h4 class="mb-3 fw-bold">
+                        <i class="fa-solid fa-bolt text-primary me-2"></i> Quick Actions
+                    </h4>
+                    <div class="d-grid gap-2">
+                        <a href="{% url 'add_task' %}" class="btn btn-outline-primary">
+                            <i class="fa-solid fa-plus me-2"></i> Add New Task
+                        </a>
+                        <a href="{% url 'task_list' %}" class="btn btn-outline-success">
+                            <i class="fa-solid fa-list-check me-2"></i> View All Tasks
+                        </a>
+                        <a href="{% url 'calendar' %}" class="btn btn-outline-info">
+                            <i class="fa-solid fa-calendar-days me-2"></i> Open Calendar
+                        </a>
+                        <a href="{% url 'analytics' %}" class="btn btn-outline-warning">
+                            <i class="fa-solid fa-chart-bar me-2"></i> View Analytics
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>

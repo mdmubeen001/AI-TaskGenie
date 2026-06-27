@@ -15,142 +15,227 @@
 
     </title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet">
 
-    <link rel="stylesheet"
+    <link
+        rel="stylesheet"
         href="{% static 'css/style.css' %}">
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
         rel="stylesheet">
 
 </head>
 
-<body>
+<body id="body">
 
-    <div class="d-flex">
+    <div class="app-container d-flex">
+
+        <!-- Mobile Overlay -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- Sidebar -->
 
-        <div class="sidebar">
+        <div
+            class="sidebar"
+            id="sidebar">
 
             <div class="logo">
-
-                🤖 AI TaskGenie
-
+                <i class="fa-solid fa-robot"></i>
+                <span>AI TaskGenie</span>
             </div>
 
-            <a href="{% url 'dashboard' %}">
+            <nav class="sidebar-nav">
+                <a href="{% url 'dashboard' %}" data-title="Dashboard" class="nav-link" data-page="dashboard">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Dashboard</span>
+                </a>
 
-                <i class="fa-solid fa-house"></i>
+                <a href="{% url 'task_list' %}" data-title="My Tasks" class="nav-link" data-page="task_list">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>My Tasks</span>
+                </a>
 
-                Dashboard
+                <a href="{% url 'add_task' %}" data-title="Add Task" class="nav-link" data-page="add_task">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Add Task</span>
+                </a>
 
-            </a>
+                <a href="{% url 'ai_planner' %}" data-title="AI Planner" class="nav-link" data-page="ai_planner">
+                    <i class="fa-solid fa-robot"></i>
+                    <span>AI Planner</span>
+                </a>
 
-            <a href="{% url 'task_list' %}">
+                <a href="{% url 'ai_chat' %}" data-title="AI Chat" class="nav-link" data-page="ai_chat">
+                    <i class="fa-solid fa-comments"></i>
+                    <span>AI Chat</span>
+                </a>
 
-                <i class="fa-solid fa-list-check"></i>
+                <a href="{% url 'analytics' %}" data-title="Analytics" class="nav-link" data-page="analytics">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Analytics</span>
+                </a>
 
-                My Tasks
+                <a href="{% url 'calendar' %}" data-title="Calendar" class="nav-link" data-page="calendar">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    <span>Calendar</span>
+                </a>
 
-            </a>
+                <div class="nav-divider"></div>
 
-            <a href="{% url 'add_task' %}">
+                <a href="{% url 'profile' %}" data-title="Profile" class="nav-link" data-page="profile">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </a>
 
-                <i class="fa-solid fa-plus"></i>
+                <a href="{% url 'settings' %}" data-title="Settings" class="nav-link" data-page="settings">
+                    <i class="fa-solid fa-gear"></i>
+                    <span>Settings</span>
+                </a>
 
-                Add Task
-
-            </a>
-
-            <a href="{% url 'ai_planner' %}">
-
-                <i class="fa-solid fa-robot"></i>
-
-                AI Planner
-
-            </a>
-
-            <a href="{% url 'ai_chat' %}">
-                
-                <i class="fa-solid fa-comments"></i>
-
-                AI Chat
-
-            </a>
-
-            <a href="{% url 'analytics' %}">
-
-                <i class="fa-solid fa-chart-line"></i>
-
-                Analytics
-
-            </a>
-
-            <a href="{% url 'calendar' %}">
-
-                <i class="fa-solid fa-calendar-days"></i>
-
-                Calendar
-
-            </a>
-
-            <a href="{% url 'profile' %}">
-
-                <i class="fa-solid fa-user"></i>
-
-                Profile
-
-            </a>
-
-            <a href="{% url 'settings' %}">
-
-                <i class="fa-solid fa-gear"></i>
-
-                Settings
-
-            </a>
-
-            <a href="{% url 'logout' %}">
-
-                <i class="fa-solid fa-right-from-bracket"></i>
-
-                Logout
-
-            </a>
+                <a href="{% url 'logout' %}" data-title="Logout" class="nav-link logout-link" data-page="logout">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Logout</span>
+                </a>
+            </nav>
 
         </div>
 
-
-
         <!-- Main -->
 
-        <div class="main-content flex-grow-1">
+        <div
+            class="main-content flex-grow-1"
+            id="mainContent">
 
             <!-- Navbar -->
 
-            <nav class="navbar navbar-expand-lg bg-white shadow-sm px-4">
+            <nav
+                class="top-navbar sticky-top"
+                id="topNavbar">
 
-                <div class="container-fluid">
+                <div class="navbar-container">
 
-                    <h4 class="mb-0">
-
-                        AI TaskGenie
-
-                    </h4>
-
-                    <div class="ms-auto d-flex align-items-center">
-
-                        <i class="fa-solid fa-bell me-4 fs-5"></i>
-
-                        <i class="fa-solid fa-moon me-4 fs-5"></i>
-
-                        <span class="fw-semibold">
-
-                            👤 {{ request.user.username }}
-
+                    <!-- Left Section: Hamburger & Brand -->
+                    <div class="navbar-left">
+                        <!-- Mobile Hamburger -->
+                        <button id="sidebarToggleMobile" class="navbar-icon-btn d-lg-none">
+                            <i class="fa-solid fa-bars"></i>
+                        </button>
+                        <!-- Desktop Sidebar Toggle -->
+                        <button id="sidebarToggle" class="navbar-icon-btn d-none d-lg-flex">
+                            <i class="fa-solid fa-bars-staggered"></i>
+                        </button>
+                        <span class="navbar-brand">
+                            <i class="fa-solid fa-robot text-primary me-2"></i>
+                            AI TaskGenie
                         </span>
+                    </div>
+
+                    <!-- Right Section: Actions -->
+                    <div class="navbar-right">
+
+                        <!-- Notifications Dropdown -->
+                        <div class="dropdown">
+                            <button class="navbar-icon-btn position-relative" data-bs-toggle="dropdown">
+                                <i class="fa-solid fa-bell"></i>
+                                <span class="notification-badge">3</span>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end shadow-lg rounded-3 border-0 p-0">
+                                <div class="dropdown-header py-3 px-4 border-bottom">
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <h6 class="mb-0 fw-bold">
+                                            <i class="fa-solid fa-bell text-primary me-2"></i>
+                                            Notifications
+                                        </h6>
+                                        <button class="btn btn-sm text-muted p-0">
+                                            <i class="fa-solid fa-ellipsis"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="dropdown-list">
+                                    <a href="#" class="dropdown-item py-3 px-4 border-bottom">
+                                        <div class="d-flex align-items-start">
+                                            <div class="notification-icon bg-primary bg-opacity-10 text-primary me-3">
+                                                <i class="fa-solid fa-calendar-days"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-1 fw-medium">Tasks due today</p>
+                                                <small class="text-muted">2 hours ago</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="dropdown-item py-3 px-4 border-bottom">
+                                        <div class="d-flex align-items-start">
+                                            <div class="notification-icon bg-success bg-opacity-10 text-success me-3">
+                                                <i class="fa-solid fa-robot"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-1 fw-medium">AI Planner generated a schedule</p>
+                                                <small class="text-muted">5 hours ago</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href="#" class="dropdown-item py-3 px-4">
+                                        <div class="d-flex align-items-start">
+                                            <div class="notification-icon bg-info bg-opacity-10 text-info me-3">
+                                                <i class="fa-solid fa-check"></i>
+                                            </div>
+                                            <div class="flex-grow-1">
+                                                <p class="mb-1 fw-medium">Task completed successfully</p>
+                                                <small class="text-muted">1 day ago</small>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="dropdown-footer py-2 px-4 border-top text-center">
+                                    <a href="#" class="text-primary fw-medium text-decoration-none">View all notifications</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dark Mode Toggle -->
+                        <button id="themeToggle" class="navbar-icon-btn">
+                            <i class="fa-solid fa-moon"></i>
+                        </button>
+
+                        <!-- User Dropdown -->
+                        <div class="dropdown">
+                            <button class="user-dropdown-btn" data-bs-toggle="dropdown">
+                                <div class="user-avatar">
+                                    <i class="fa-solid fa-user"></i>
+                                </div>
+                                <span class="user-name d-none d-md-inline">{{ request.user.username }}</span>
+                                <i class="fa-solid fa-chevron-down ms-2 text-muted"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-end shadow-lg rounded-3 border-0 p-0">
+                                <div class="dropdown-header py-3 px-4 border-bottom">
+                                    <div class="d-flex align-items-center">
+                                        <div class="user-avatar me-3">
+                                            <i class="fa-solid fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <h6 class="mb-0 fw-bold">{{ request.user.username }}</h6>
+                                            <small class="text-muted">Premium User</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a href="{% url 'profile' %}" class="dropdown-item py-3 px-4">
+                                    <i class="fa-solid fa-user-circle me-3 text-muted"></i>
+                                    My Profile
+                                </a>
+                                <a href="{% url 'settings' %}" class="dropdown-item py-3 px-4">
+                                    <i class="fa-solid fa-sliders me-3 text-muted"></i>
+                                    Settings
+                                </a>
+                                <hr class="dropdown-divider m-0">
+                                <a href="{% url 'logout' %}" class="dropdown-item py-3 px-4 text-danger">
+                                    <i class="fa-solid fa-right-from-bracket me-3"></i>
+                                    Logout
+                                </a>
+                            </div>
+                        </div>
 
                     </div>
 
@@ -158,39 +243,34 @@
 
             </nav>
 
-
-
             <!-- Page Content -->
 
-           <div class="p-4">
+            <div class="p-4">
 
-              {% if messages %}
+                {% if messages %}
 
-                 {% for message in messages %}
+                    {% for message in messages %}
 
-                <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show">
 
-                     {{ message }}
+                            {{ message }}
 
-                     <button
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="alert">
 
-                         type="button"
+                            </button>
 
-                         class="btn-close"
- 
-                         data-bs-dismiss="alert">
+                        </div>
 
-                     </button>
+                    {% endfor %}
 
-                </div>
+                {% endif %}
 
-            {% endfor %}
+                {% block content %}
 
-             {% endif %}
-
-             {% block content %}
-
-             {% endblock %}
+                {% endblock %}
 
             </div>
 
@@ -199,6 +279,88 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+
+        // ==========================
+        // Dark Mode Toggle
+        // ==========================
+
+        const body = document.getElementById("body");
+        const themeToggle = document.getElementById("themeToggle");
+
+        // Initialize theme on load
+        if(localStorage.getItem("theme") === "dark"){
+            body.classList.add("dark-mode");
+            themeToggle.innerHTML = "<i class=\"fa-solid fa-sun\"></i>";
+        }
+
+        themeToggle.onclick = function(){
+            body.classList.toggle("dark-mode");
+            if(body.classList.contains("dark-mode")){
+                localStorage.setItem("theme","dark");
+                themeToggle.innerHTML = "<i class=\"fa-solid fa-sun\"></i>";
+            } else {
+                localStorage.setItem("theme","light");
+                themeToggle.innerHTML = "<i class=\"fa-solid fa-moon\"></i>";
+            }
+        }
+
+        // ==========================
+        // Sidebar Toggle
+        // ==========================
+
+        const sidebar = document.getElementById("sidebar");
+        const sidebarToggle = document.getElementById("sidebarToggle");
+        const sidebarToggleMobile = document.getElementById("sidebarToggleMobile");
+        const sidebarOverlay = document.getElementById("sidebarOverlay");
+
+        // Check saved sidebar state
+        if (localStorage.getItem("sidebarCollapsed") === "true") {
+            sidebar.classList.add("collapsed");
+        }
+
+        // Desktop sidebar toggle
+        sidebarToggle?.addEventListener("click", () => {
+            sidebar.classList.toggle("collapsed");
+            localStorage.setItem("sidebarCollapsed", sidebar.classList.contains("collapsed"));
+        });
+
+        // Mobile sidebar toggle (slide in)
+        sidebarToggleMobile?.addEventListener("click", () => {
+            sidebar.classList.add("show");
+            sidebarOverlay.classList.add("show");
+        });
+
+        // Close sidebar on overlay click
+        sidebarOverlay?.addEventListener("click", () => {
+            sidebar.classList.remove("show");
+            sidebarOverlay.classList.remove("show");
+        });
+
+        // ==========================
+        // Active Page Highlighting
+        // ==========================
+        document.addEventListener("DOMContentLoaded", function() {
+            const navLinks = document.querySelectorAll(".sidebar-nav .nav-link");
+            
+            navLinks.forEach(link => {
+                link.addEventListener("click", function() {
+                    navLinks.forEach(l => l.classList.remove("active"));
+                    this.classList.add("active");
+                });
+            });
+            
+            // Try to highlight current page based on URL
+            const currentPath = window.location.pathname;
+            navLinks.forEach(link => {
+                if (link.getAttribute("href").includes(currentPath)) {
+                    link.classList.add("active");
+                }
+            });
+        });
+
+    </script>
 
 </body>
 

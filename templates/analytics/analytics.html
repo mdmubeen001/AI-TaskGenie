@@ -5,637 +5,452 @@
 {% block content %}
 
 <div class="container-fluid">
-
     <!-- Header -->
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-
-            <h2 class="fw-bold">
-
-                📊 Analytics Dashboard
-
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-chart-line text-primary me-2"></i>Analytics Dashboard
             </h2>
-
-            <p class="text-muted">
-
-                Monitor your productivity and task performance.
-
-            </p>
-
+            <p class="text-muted mb-0">Monitor your productivity and task performance.</p>
         </div>
-
+        <button onclick="window.print()" class="btn btn-outline-primary">
+            <i class="fa-solid fa-download me-2"></i>Export PDF
+        </button>
     </div>
-
 
     <!-- Stats Cards -->
-
-    <div class="row">
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>Total Tasks</h6>
-
-                    <h2>{{ total_tasks }}</h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>Completed</h6>
-
-                    <h2 class="text-success">
-
-                        {{ completed_tasks }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>Pending</h6>
-
-                    <h2 class="text-warning">
-
-                        {{ pending_tasks }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>In Progress</h6>
-
-                    <h2 class="text-primary">
-
-                        {{ in_progress_tasks }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>High Priority</h6>
-
-                    <h2 class="text-danger">
-
-                        {{ high_priority_tasks }}
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-2 col-md-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    <h6>Productivity</h6>
-
-                    <h2 class="text-success">
-
-                        {{ productivity }}%
-
-                    </h2>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <!-- Charts -->
-
-    <div class="row">
-
-        <div class="col-lg-8 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body">
-
-                    <h5 class="mb-4">
-
-                        📈 Weekly Productivity
-
-                    </h5>
-
-                    <canvas id="productivityChart"></canvas>
-
-                </div>
-
-            </div>
-
-        </div>
-
-        <div class="col-lg-4 mb-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body">
-
-                    <h5 class="mb-4">
-
-                        🥧 Task Status
-
-                    </h5>
-
-                    <canvas id="statusChart"></canvas>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-
-<!-- Second Row -->
-
-<div class="row">
-
-    <!-- Recent Tasks -->
-
-    <div class="col-lg-8">
-
-        <div class="card shadow border-0 rounded-4">
-
-            <div class="card-body">
-
-                <h5 class="mb-4">
-
-                    📋 Recent Tasks
-
-                </h5>
-
-                <table class="table table-hover">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Task</th>
-
-                            <th>Status</th>
-
-                            <th>Priority</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    {% for task in recent_tasks %}
-
-                        <tr>
-
-                            <td>{{ task.title }}</td>
-
-                            <td>{{ task.status }}</td>
-
-                            <td>{{ task.priority }}</td>
-
-                        </tr>
-
-                    {% empty %}
-
-                        <tr>
-
-                            <td colspan="3">
-
-                                No Tasks Found
-
-                            </td>
-
-                        </tr>
-
-                    {% endfor %}
-
-                    </tbody>
-
-                </table>
-
-                <hr>
-
-                <h5 class="mt-4">
-
-                    📅 Upcoming Deadlines
-
-                </h5>
-
-                <ul class="list-group">
-
-                    {% for task in upcoming_tasks %}
-
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <strong>{{ task.title }}</strong>
-
-                            <br>
-
-                            <small class="text-muted">
-
-                                {{ task.priority }} Priority
-
-                            </small>
-
+    <div class="row g-4 mb-4">
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-total h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">Total Tasks</h6>
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                            <i class="fa-solid fa-list-check"></i>
                         </div>
-
-                        <span class="badge bg-primary">
-
-                            {{ task.deadline }}
-
-                        </span>
-
-                    </li>
-
-                    {% empty %}
-
-                    <li class="list-group-item text-center">
-
-                        🎉 No Upcoming Deadlines
-
-                    </li>
-
-                    {% endfor %}
-
-                </ul>
-
+                    </div>
+                    <h2 class="fw-bold mb-0">{{ total_tasks }}</h2>
+                </div>
             </div>
-
         </div>
-
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-completed h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">Completed</h6>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                            <i class="fa-solid fa-check-double"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold mb-0 text-success">{{ completed_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-pending h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">Pending</h6>
+                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                            <i class="fa-solid fa-clock"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold mb-0 text-warning">{{ pending_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-in-progress h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">In Progress</h6>
+                        <div class="stat-icon bg-info bg-opacity-10 text-info">
+                            <i class="fa-solid fa-spinner"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold mb-0 text-info">{{ in_progress_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-high-priority h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">High Priority</h6>
+                        <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                            <i class="fa-solid fa-flag"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold mb-0 text-danger">{{ high_priority_tasks }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-4 col-6">
+            <div class="card shadow-sm border-0 rounded-4 stat-card stat-productivity h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 text-muted">Productivity</h6>
+                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                            <i class="fa-solid fa-trophy"></i>
+                        </div>
+                    </div>
+                    <h2 class="fw-bold mb-0 text-success">{{ productivity }}%</h2>
+                </div>
+            </div>
+        </div>
     </div>
 
-
- <!-- Productivity -->
-
-<div class="col-lg-4">
-
-    <div class="card shadow border-0 rounded-4">
-
-        <div class="card-body">
-
-            <h5>
-
-                🏆 Productivity Score
-
-            </h5>
-
-            <hr>
-
-            <h1 class="display-4 text-success">
-
-                {{ productivity }}%
-
-            </h1>
-
-            <div class="progress mb-3">
-
-                <div
-
-                    class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-
-                    role="progressbar"
-
-                    style="width: {{ productivity }}%;">
-
+    <!-- Charts Row -->
+    <div class="row g-4 mb-4">
+        <!-- Weekly Productivity Chart -->
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4 h-100">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fa-solid fa-chart-area text-primary me-2"></i>Weekly Productivity
+                        </h5>
+                    </div>
+                    <div class="chart-container" style="height: 300px;">
+                        <canvas id="productivityChart"></canvas>
+                    </div>
                 </div>
-
             </div>
-
-            <div class="row text-center">
-
-                <div class="col-6">
-
-                    <h6 class="text-danger">
-
-                        ⚠️ Overdue
-
-                    </h6>
-
-                    <h3>
-
-                        {{ overdue_tasks.count }}
-
-                    </h3>
-
-                </div>
-
-                <div class="col-6">
-
-                    <h6 class="text-primary">
-
-                        📅 Due Today
-
-                    </h6>
-
-                    <h3>
-
-                        {{ today_tasks.count }}
-
-                    </h3>
-
-                </div>
-
-            </div>
-
-            <hr>
-
-            {% if productivity >= 90 %}
-
-            <div class="alert alert-success">
-
-                🌟 Productivity Master
-
-            </div>
-
-            {% elif productivity >= 70 %}
-
-            <div class="alert alert-primary">
-
-                🚀 Excellent Performer
-
-            </div>
-
-            {% elif productivity >= 50 %}
-
-            <div class="alert alert-warning">
-
-                👍 Consistent Worker
-
-            </div>
-
-            {% else %}
-
-            <div class="alert alert-danger">
-
-                💪 Keep Improving
-
-            </div>
-
-            {% endif %}
-
         </div>
 
+        <!-- Task Status & Priority Charts -->
+        <div class="col-lg-4">
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-chart-pie text-primary me-2"></i>Task Status
+                    </h5>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="statusChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-chart-pie text-primary me-2"></i>Task Priority
+                    </h5>
+                    <div class="chart-container" style="height: 200px;">
+                        <canvas id="priorityChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Achievement Card -->
+    <!-- Bottom Row -->
+    <div class="row g-4">
+        <!-- Recent Tasks & Upcoming Deadlines -->
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-clock-rotate-left text-primary me-2"></i>Recent Tasks
+                    </h5>
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-4">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Task</th>
+                                    <th>Status</th>
+                                    <th>Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in recent_tasks %}
+                                    <tr>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <div class="task-dot me-3"></div>
+                                                <div>
+                                                    <h6 class="mb-0">{{ task.title }}</h6>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            {% if task.status == "Completed" %}
+                                                <span class="badge bg-success bg-opacity-10 text-success">
+                                                    <i class="fa-solid fa-check me-1"></i>Completed
+                                                </span>
+                                            {% elif task.status == "Pending" %}
+                                                <span class="badge bg-warning bg-opacity-10 text-warning">
+                                                    <i class="fa-solid fa-clock me-1"></i>Pending
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-info bg-opacity-10 text-info">
+                                                    <i class="fa-solid fa-spinner me-1"></i>In Progress
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if task.priority == "High" %}
+                                                <span class="badge bg-danger bg-opacity-10 text-danger">
+                                                    <i class="fa-solid fa-flag me-1"></i>High
+                                                </span>
+                                            {% elif task.priority == "Medium" %}
+                                                <span class="badge bg-warning bg-opacity-10 text-warning">
+                                                    <i class="fa-solid fa-flag me-1"></i>Medium
+                                                </span>
+                                            {% else %}
+                                                <span class="badge bg-primary bg-opacity-10 text-primary">
+                                                    <i class="fa-solid fa-flag me-1"></i>Low
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% empty %}
+                                    <tr>
+                                        <td colspan="3" class="text-center py-5 text-muted">
+                                            <i class="fa-solid fa-inbox fa-3x mb-3"></i>
+                                            <p class="mb-0">No Tasks Found</p>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
 
-    <div class="card shadow border-0 rounded-4 mt-4">
-
-        <div class="card-body">
-
-            <h5>
-
-                🏅 Achievement
-
-            </h5>
-
-            <hr>
-
-            {% if productivity >= 90 %}
-
-            <div class="alert alert-success">
-
-                🏆 Productivity Champion
-
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-calendar-check text-primary me-2"></i>Upcoming Deadlines
+                    </h5>
+                    <ul class="list-group list-group-flush">
+                        {% for task in upcoming_tasks %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <div>
+                                    <strong>{{ task.title }}</strong>
+                                    <br>
+                                    <small class="text-muted">
+                                        <i class="fa-solid fa-flag me-1"></i>{{ task.priority }} Priority
+                                    </small>
+                                </div>
+                                <span class="badge bg-primary bg-opacity-10 text-primary">
+                                    <i class="fa-solid fa-calendar me-1"></i>{{ task.deadline }}
+                                </span>
+                            </li>
+                        {% empty %}
+                            <li class="list-group-item text-center py-5">
+                                <i class="fa-solid fa-circle-check text-success fa-3x mb-3"></i>
+                                <h6 class="fw-semibold mb-1 text-success">No Upcoming Deadlines</h6>
+                                <p class="text-muted mb-0">Great job staying ahead of your tasks!</p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-
-            <p class="text-muted">
-
-                Outstanding work! You've completed almost all your tasks.
-
-            </p>
-
-            {% elif productivity >= 70 %}
-
-            <div class="alert alert-primary">
-
-                🚀 Excellent Progress
-
-            </div>
-
-            <p class="text-muted">
-
-                You're maintaining excellent consistency.
-
-            </p>
-
-            {% elif productivity >= 50 %}
-
-            <div class="alert alert-warning">
-
-                👍 Good Momentum
-
-            </div>
-
-            <p class="text-muted">
-
-                Keep completing tasks to improve your productivity.
-
-            </p>
-
-            {% else %}
-
-            <div class="alert alert-danger">
-
-                💪 Time to Focus
-
-            </div>
-
-            <p class="text-muted">
-
-                Start completing pending tasks to unlock achievements.
-
-            </p>
-
-            {% endif %}
-
-            <hr>
-
-            <div class="d-grid">
-
-                <button
-
-                    onclick="window.print()"
-
-                    class="btn btn-dark">
-
-                    📄 Export Analytics PDF
-
-                </button>
-
-            </div>
-
         </div>
 
+        <!-- Productivity Score & Achievement -->
+        <div class="col-lg-4">
+            <!-- Productivity Card -->
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-trophy text-primary me-2"></i>Productivity Score
+                    </h5>
+                    <div class="text-center mb-4">
+                        <h1 class="display-4 fw-bold mb-2 text-success">{{ productivity }}%</h1>
+                        <div class="progress mb-3" style="height: 10px;">
+                            <div class="progress-bar bg-gradient" style="width: {{ productivity }}%; background: linear-gradient(90deg, #22c55e, #16a34a);"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-3 mb-4">
+                        <div class="col-6 text-center">
+                            <div class="p-3 bg-light rounded-4">
+                                <h6 class="text-danger fw-semibold mb-1">
+                                    <i class="fa-solid fa-circle-exclamation me-1"></i>Overdue
+                                </h6>
+                                <h3 class="fw-bold text-danger mb-0">{{ overdue_tasks.count }}</h3>
+                            </div>
+                        </div>
+                        <div class="col-6 text-center">
+                            <div class="p-3 bg-light rounded-4">
+                                <h6 class="text-primary fw-semibold mb-1">
+                                    <i class="fa-solid fa-calendar-day me-1"></i>Due Today
+                                </h6>
+                                <h3 class="fw-bold text-primary mb-0">{{ today_tasks.count }}</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    {% if productivity >= 90 %}
+                        <div class="alert alert-success text-center">
+                            <i class="fa-solid fa-star me-2"></i>Productivity Master
+                        </div>
+                    {% elif productivity >= 70 %}
+                        <div class="alert alert-primary text-center">
+                            <i class="fa-solid fa-rocket me-2"></i>Excellent Performer
+                        </div>
+                    {% elif productivity >= 50 %}
+                        <div class="alert alert-warning text-center">
+                            <i class="fa-solid fa-thumbs-up me-2"></i>Consistent Worker
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger text-center">
+                            <i class="fa-solid fa-fire me-2"></i>Keep Improving
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Achievement Card -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-medal text-primary me-2"></i>Achievement
+                    </h5>
+                    
+                    {% if productivity >= 90 %}
+                        <div class="alert alert-success text-center">
+                            <i class="fa-solid fa-trophy fa-2x mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Productivity Champion</h6>
+                            <p class="text-muted mb-0">Outstanding work! You've completed almost all your tasks.</p>
+                        </div>
+                    {% elif productivity >= 70 %}
+                        <div class="alert alert-primary text-center">
+                            <i class="fa-solid fa-rocket fa-2x mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Excellent Progress</h6>
+                            <p class="text-muted mb-0">You're maintaining excellent consistency.</p>
+                        </div>
+                    {% elif productivity >= 50 %}
+                        <div class="alert alert-warning text-center">
+                            <i class="fa-solid fa-chart-line fa-2x mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Good Momentum</h6>
+                            <p class="text-muted mb-0">Keep completing tasks to improve your productivity.</p>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-danger text-center">
+                            <i class="fa-solid fa-bullseye fa-2x mb-2 d-block"></i>
+                            <h6 class="fw-bold mb-1">Time to Focus</h6>
+                            <p class="text-muted mb-0">Start completing pending tasks to unlock achievements.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
     </div>
-
-</div>
-
-</div>
-
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
 <script>
-
-new Chart(document.getElementById("productivityChart"),{
-
-    type:"line",
-
-    data:{
-
-        labels:[
-
-        {% for day in weekly_labels %}
-
-        "{{ day }}",
-
-        {% endfor %}
-
-        ],
-
-        datasets:[{
-
-            label:"Tasks Created",
-
-            data:[
-
-            {% for value in weekly_data %}
-
-            {{ value }},
-
-            {% endfor %}
-
+    // Weekly Productivity Chart
+    new Chart(document.getElementById("productivityChart"), {
+        type: "line",
+        data: {
+            labels: [
+                {% for day in weekly_labels %}
+                    "{{ day }}",
+                {% endfor %}
             ],
+            datasets: [{
+                label: "Tasks Created",
+                data: [
+                    {% for value in weekly_data %}
+                        {{ value }},
+                    {% endfor %}
+                ],
+                borderWidth: 3,
+                borderColor: "#3b82f6",
+                backgroundColor: "rgba(59, 130, 246, 0.1)",
+                tension: 0.4,
+                fill: true,
+                pointRadius: 4,
+                pointBackgroundColor: "#3b82f6",
+                pointBorderColor: "#ffffff",
+                pointBorderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: "top"
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: {
+                        color: "rgba(0, 0, 0, 0.05)"
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    }
+                }
+            }
+        }
+    });
 
-            borderWidth:3,
+    // Task Status Chart
+    new Chart(document.getElementById("statusChart"), {
+        type: "doughnut",
+        data: {
+            labels: ["Completed", "Pending", "In Progress"],
+            datasets: [{
+                data: [
+                    {{ completed_tasks }},
+                    {{ pending_tasks }},
+                    {{ in_progress_tasks }}
+                ],
+                backgroundColor: [
+                    "#22c55e",
+                    "#eab308",
+                    "#06b6d4"
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            },
+            cutout: "70%"
+        }
+    });
 
-            tension:.4,
-
-            fill:true
-
-        }]
-
-    }
-
-});
-
-new Chart(document.getElementById("statusChart"),{
-
-    type:"doughnut",
-
-    data:{
-
-        labels:["Completed","Pending","In Progress"],
-
-        datasets:[{
-
-            data:[
-
-                {{ completed_tasks }},
-
-                {{ pending_tasks }},
-
-                {{ in_progress_tasks }}
-
-            ]
-
-        }]
-
-    }
-
-});
-
-new Chart(document.getElementById("priorityChart"),{
-
-    type:"pie",
-
-    data:{
-
-        labels:[
-
-            "Low",
-
-            "Medium",
-
-            "High"
-
-        ],
-
-        datasets:[{
-
-            data:[
-
-                {{ low_priority }},
-
-                {{ medium_priority }},
-
-                {{ high_priority }}
-
-            ]
-
-        }]
-
-    }
-
-});
-
+    // Task Priority Chart
+    new Chart(document.getElementById("priorityChart"), {
+        type: "pie",
+        data: {
+            labels: ["Low", "Medium", "High"],
+            datasets: [{
+                data: [
+                    {{ low_priority }},
+                    {{ medium_priority }},
+                    {{ high_priority }}
+                ],
+                backgroundColor: [
+                    "#3b82f6",
+                    "#eab308",
+                    "#ef4444"
+                ],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: "bottom"
+                }
+            }
+        }
+    });
 </script>
 
 {% endblock %}

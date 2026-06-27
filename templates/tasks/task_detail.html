@@ -1,228 +1,90 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}Task Details{% endblock %}
+{% block title %}{{ task.title }}{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-
-            <h2 class="fw-bold">
-
-                📄 Task Details
-
-            </h2>
-
-            <p class="text-muted">
-
-                View complete information about your task.
-
-            </p>
-
+            <a href="{% url 'task_list' %}" class="text-decoration-none text-muted mb-2 d-inline-block">
+                <i class="fa-solid fa-arrow-left me-2"></i>Back to Tasks
+            </a>
+            <h2 class="fw-bold mb-1">{{ task.title }}</h2>
+            <p class="text-muted mb-0">Created on {{ task.created_at|date:"F d, Y" }}</p>
         </div>
-
-        <a href="{% url 'task_list' %}" class="btn btn-outline-secondary">
-
-            ← Back
-
-        </a>
-
+        <div class="d-flex gap-2">
+            <a href="{% url 'update_task' task.id %}" class="btn btn-outline-primary">
+                <i class="fa-solid fa-edit me-2"></i>Edit
+            </a>
+            <a href="{% url 'delete_task' task.id %}" class="btn btn-outline-danger">
+                <i class="fa-solid fa-trash-can me-2"></i>Delete
+            </a>
+        </div>
     </div>
 
-
-    <div class="card shadow border-0 rounded-4">
-
-        <div class="card-body p-4">
-
-            <div class="row">
-
-                <div class="col-md-8">
-
-                    <h2 class="fw-bold">
-
-                        {{ task.title }}
-
-                    </h2>
-
-                    <hr>
-
-                    <h5>Description</h5>
-
-                    <p class="text-muted">
-
-                        {{ task.description }}
-
-                    </p>
-
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-file-lines text-primary me-2"></i>Description
+                    </h5>
+                    {% if task.description %}
+                        <p class="text-muted">{{ task.description|linebreaks }}</p>
+                    {% else %}
+                        <p class="text-muted">No description provided.</p>
+                    {% endif %}
                 </div>
+            </div>
+        </div>
 
-                <div class="col-md-4">
-
-                    <div class="card bg-light border-0">
-
-                        <div class="card-body">
-
-                            <h5 class="mb-3">
-
-                                Task Information
-
-                            </h5>
-
-                            <hr>
-
-                            <p>
-
-                                <strong>Priority</strong>
-
-                            </p>
-
-                            {% if task.priority == "High" %}
-
-                            <span class="badge bg-danger">
-
-                                High
-
+        <div class="col-lg-4">
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-info-circle text-primary me-2"></i>Task Details
+                    </h5>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold mb-1">Status</label>
+                        {% if task.status == 'Completed' %}
+                            <span class="badge bg-success-subtle text-success px-3 py-2">
+                                <i class="fa-solid fa-check me-1"></i>{{ task.status }}
                             </span>
-
-                            {% elif task.priority == "Medium" %}
-
-                            <span class="badge bg-warning text-dark">
-
-                                Medium
-
+                        {% elif task.status == 'In Progress' %}
+                            <span class="badge bg-info-subtle text-info px-3 py-2">
+                                <i class="fa-solid fa-spinner me-1"></i>{{ task.status }}
                             </span>
-
-                            {% else %}
-
-                            <span class="badge bg-primary">
-
-                                Low
-
+                        {% else %}
+                            <span class="badge bg-warning-subtle text-warning px-3 py-2">
+                                <i class="fa-solid fa-clock me-1"></i>{{ task.status }}
                             </span>
-
-                            {% endif %}
-
-                            <hr>
-
-                            <p>
-
-                                <strong>Status</strong>
-
-                            </p>
-
-                            {% if task.status == "Completed" %}
-
-                            <span class="badge bg-success">
-
-                                Completed
-
-                            </span>
-
-                            {% elif task.status == "Pending" %}
-
-                            <span class="badge bg-warning text-dark">
-
-                                Pending
-
-                            </span>
-
-                            {% else %}
-
-                            <span class="badge bg-info">
-
-                                In Progress
-
-                            </span>
-
-                            {% endif %}
-
-                            <hr>
-
-                            <p>
-
-                                <strong>Deadline</strong>
-
-                            </p>
-
-                            <p>
-
-                                {{ task.deadline }}
-
-                            </p>
-
-                            <hr>
-
-                            <p>
-
-                                <strong>Created</strong>
-
-                            </p>
-
-                            <p>
-
-                                {{ task.created_at }}
-
-                            </p>
-
-                            <hr>
-
-                            <p>
-
-                                <strong>Last Updated</strong>
-
-                            </p>
-
-                            <p>
-
-                                {{ task.updated_at }}
-
-                            </p>
-
-                        </div>
-
+                        {% endif %}
                     </div>
-
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold mb-1">Priority</label>
+                        {% if task.priority == 'High' %}
+                            <span class="badge bg-danger-subtle text-danger px-3 py-2">
+                                <i class="fa-solid fa-flag me-1"></i>{{ task.priority }}
+                            </span>
+                        {% elif task.priority == 'Medium' %}
+                            <span class="badge bg-warning-subtle text-warning px-3 py-2">
+                                <i class="fa-solid fa-flag me-1"></i>{{ task.priority }}
+                            </span>
+                        {% else %}
+                            <span class="badge bg-primary-subtle text-primary px-3 py-2">
+                                <i class="fa-solid fa-flag me-1"></i>{{ task.priority }}
+                            </span>
+                        {% endif %}
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold mb-1">Deadline</label>
+                        <p class="text-muted mb-0">
+                            <i class="fa-solid fa-calendar text-muted me-2"></i>{{ task.deadline|date:"F d, Y" }}
+                        </p>
+                    </div>
                 </div>
-
             </div>
-
-            <hr>
-
-            <div class="d-flex gap-3">
-
-                <a href="{% url 'update_task' task.id %}"
-
-                    class="btn btn-warning">
-
-                    ✏ Edit Task
-
-                </a>
-
-                <a href="{% url 'delete_task' task.id %}"
-
-                    class="btn btn-danger">
-
-                    🗑 Delete Task
-
-                </a>
-
-                <a href="{% url 'task_list' %}"
-
-                    class="btn btn-secondary">
-
-                    Back
-
-                </a>
-
-            </div>
-
         </div>
-
     </div>
-
 </div>
-
 {% endblock %}

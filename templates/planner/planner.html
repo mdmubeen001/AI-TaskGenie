@@ -1,182 +1,226 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}
-
-AI Planner
-
-{% endblock %}
+{% block title %}AI Planner{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
-
-    <!-- Planner Card -->
-
-    <div class="card shadow border-0 rounded-4">
-
-        <div class="card-body p-5">
-
-            <h2 class="fw-bold">
-
-                🤖 AI Planner
-
+    <!-- Hero Section -->
+    <div class="card shadow border-0 rounded-4 mb-4">
+        <div class="card-body p-5 bg-gradient-primary" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); color: white;">
+            <h2 class="fw-bold mb-2">
+                <i class="fa-solid fa-brain me-2"></i>AI Productivity Planner
             </h2>
-
-            <p class="text-muted">
-
-                Describe your schedule and let AI create a personalized daily plan.
-
-            </p>
-
-            <form
-                method="POST"
-                id="plannerForm">
-
-                {% csrf_token %}
-
-                <textarea
-
-                    name="prompt"
-
-                    class="form-control mb-3"
-
-                    rows="8"
-
-                    required
-
-                    placeholder="Example:
-
-I have 5 assignments.
-
-Hackathon tomorrow.
-
-Gym at 6 PM.
-
-Exam in 3 days.
-
-Need 8 hours sleep."></textarea>
-
-                <button
-
-                    id="generateBtn"
-
-                    type="submit"
-
-                    class="btn btn-primary btn-lg">
-
-                    ⚡ Generate AI Plan
-
-                </button>
-
-            </form>
-
+            <p class="mb-0 opacity-90">Transform your goals into intelligent, time-optimized daily schedules.</p>
         </div>
-
     </div>
 
+    <div class="row g-4">
+        <!-- Left Column - Planner Form -->
+        <div class="col-lg-5">
+            <!-- Planner Input Card -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-header bg-light border-0 p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-clipboard-list text-primary me-2"></i>Plan Your Day
+                    </h5>
+                </div>
+                <div class="card-body p-4">
+                    <form method="POST" id="plannerForm">
+                        {% csrf_token %}
+                        
+                        <!-- Goal -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fa-solid fa-bullseye text-primary me-2"></i>Goal
+                            </label>
+                            <input type="text" class="form-control" name="goal" required placeholder="e.g., Complete project milestone">
+                        </div>
 
-    {% if response %}
+                        <!-- Available Hours -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fa-solid fa-clock text-primary me-2"></i>Available Hours
+                            </label>
+                            <input type="number" class="form-control" name="available_hours" required min="1" max="24" placeholder="e.g., 8">
+                        </div>
 
-    <!-- AI Response Card -->
+                        <div class="row g-3 mb-3">
+                            <!-- Priority -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-flag text-primary me-2"></i>Priority
+                                </label>
+                                <select class="form-select" name="priority" required>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                            <!-- Energy Level -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-bolt text-primary me-2"></i>Energy Level
+                                </label>
+                                <select class="form-select" name="energy_level" required>
+                                    <option value="Low">Low</option>
+                                    <option value="Medium" selected>Medium</option>
+                                    <option value="High">High</option>
+                                </select>
+                            </div>
+                        </div>
 
-    <div class="card shadow border-0 rounded-4 mt-4">
+                        <div class="row g-3 mb-3">
+                            <!-- Deadline -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-calendar-day text-primary me-2"></i>Deadline
+                                </label>
+                                <input type="date" class="form-control" name="deadline">
+                            </div>
+                            <!-- Break Duration -->
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    <i class="fa-solid fa-mug-hot text-primary me-2"></i>Break Duration (min)
+                                </label>
+                                <input type="number" class="form-control" name="break_duration" min="5" max="60" value="30">
+                            </div>
+                        </div>
 
-        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+                        <!-- Work Style -->
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">
+                                <i class="fa-solid fa-user-gear text-primary me-2"></i>Work Style
+                            </label>
+                            <select class="form-select" name="work_style" required>
+                                <option value="Deep Work">Deep Work (Focus blocks)</option>
+                                <option value="Balanced" selected>Balanced (Mix of tasks)</option>
+                                <option value="Fast Execution">Fast Execution (Quick sprints)</option>
+                            </select>
+                        </div>
 
-            <h5 class="mb-0">
+                        <!-- Additional Notes -->
+                        <div class="mb-4">
+                            <label class="form-label fw-semibold">
+                                <i class="fa-solid fa-sticky-note text-primary me-2"></i>Additional Notes
+                            </label>
+                            <textarea class="form-control" name="prompt" rows="4" placeholder="e.g., Meetings at 2 PM, gym at 6 PM"></textarea>
+                        </div>
 
-                🤖 AI Generated Plan
-
-            </h5>
-
-            <div>
-
-                <button
-
-                    class="btn btn-light btn-sm me-2"
-
-                    onclick="copyPlan()">
-
-                    📋 Copy
-
-                </button>
-
-                <button
-
-                    class="btn btn-success btn-sm"
-
-                    onclick="window.print()">
-
-                    📄 Download PDF
-
-                </button>
-
+                        <div class="d-flex gap-2">
+                            <button id="generateBtn" type="submit" class="btn btn-primary w-100">
+                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Plan
+                            </button>
+                            <button id="clearBtn" type="button" class="btn btn-outline-secondary">
+                                <i class="fa-solid fa-eraser"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
-
         </div>
 
-        <div class="card-body">
-
-            <div
-
-                id="aiResponse"
-
-                class="border rounded-3 p-4 bg-light"
-
-                style="
-
-                    white-space: pre-wrap;
-
-                    line-height: 1.9;
-
-                    font-size:16px;
-
-                ">
-
-{{ response }}
-
+        <!-- Right Column - AI Output -->
+        <div class="col-lg-7">
+            <!-- AI Recommendation Panel -->
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center p-4">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fa-solid fa-robot text-primary me-2"></i>AI Recommendations
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <button id="copyBtn" class="btn btn-sm btn-outline-primary">
+                            <i class="fa-solid fa-copy"></i>
+                        </button>
+                        <button id="printBtn" class="btn btn-sm btn-outline-primary">
+                            <i class="fa-solid fa-print"></i>
+                        </button>
+                        <button id="exportBtn" class="btn btn-sm btn-outline-primary" disabled>
+                            <i class="fa-solid fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body p-4" id="aiResponseContainer">
+                    {% if response %}
+                        <div id="aiResponse" class="bg-light rounded-3 p-4" style="white-space: pre-wrap; line-height: 1.8;">
+                            {{ response }}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-5 text-muted">
+                            <i class="fa-solid fa-lightbulb fa-3x mb-3 opacity-50"></i>
+                            <h6 class="fw-semibold mb-1">Your plan will appear here</h6>
+                            <p class="mb-0 small">Fill out the form and click Generate Plan</p>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
 
+            <!-- Productivity Summary -->
+            {% if response %}
+                <div class="card shadow border-0 rounded-4">
+                    <div class="card-header bg-light border-0 p-4">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fa-solid fa-chart-line text-primary me-2"></i>Productivity Summary
+                        </h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="row g-3">
+                            <div class="col-md-4 col-6">
+                                <div class="p-3 bg-light rounded-3 text-center">
+                                    <i class="fa-solid fa-list-check text-primary mb-1 fa-2x"></i>
+                                    <h4 class="fw-bold mb-0">4</h4>
+                                    <p class="text-muted mb-0 small">Total Tasks</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-6">
+                                <div class="p-3 bg-light rounded-3 text-center">
+                                    <i class="fa-solid fa-brain text-primary mb-1 fa-2x"></i>
+                                    <h4 class="fw-bold mb-0">3h</h4>
+                                    <p class="text-muted mb-0 small">Deep Work</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 col-12">
+                                <div class="p-3 bg-light rounded-3 text-center">
+                                    <i class="fa-solid fa-star text-primary mb-1 fa-2x"></i>
+                                    <h4 class="fw-bold mb-0">85</h4>
+                                    <p class="text-muted mb-0 small">Focus Score</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
         </div>
-
     </div>
-
-    {% endif %}
-
 </div>
 
-
 <script>
-
-function copyPlan(){
-
-    const text = document.getElementById("aiResponse").innerText;
-
-    navigator.clipboard.writeText(text);
-
-    alert("✅ AI Plan copied successfully.");
-
-}
-
-
 // Loading Button
-
-document.getElementById("plannerForm").addEventListener("submit", function(){
-
-    const btn = document.getElementById("generateBtn");
-
+document.getElementById('plannerForm').addEventListener('submit', function() {
+    const btn = document.getElementById('generateBtn');
     btn.disabled = true;
-
-    btn.innerHTML = `
-
-        <span class="spinner-border spinner-border-sm me-2"></span>
-
-        Generating AI Plan...
-
-    `;
-
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Plan...';
 });
 
-</script>
+// Clear Button
+document.getElementById('clearBtn').addEventListener('click', function() {
+    document.getElementById('plannerForm').reset();
+});
 
+// Copy Plan
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const aiResponse = document.getElementById('aiResponse');
+    if (aiResponse) {
+        navigator.clipboard.writeText(aiResponse.innerText);
+        this.innerHTML = '<i class="fa-solid fa-check"></i>';
+        setTimeout(() => {
+            this.innerHTML = '<i class="fa-solid fa-copy"></i>';
+        }, 2000);
+    }
+});
+
+// Print Plan
+document.getElementById('printBtn').addEventListener('click', function() {
+    window.print();
+});
+</script>
 {% endblock %}

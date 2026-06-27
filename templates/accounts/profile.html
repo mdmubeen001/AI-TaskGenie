@@ -1,473 +1,240 @@
 {% extends 'base_dashboard.html' %}
 
-{% block title %}
-My Profile
-{% endblock %}
+{% block title %}My Profile{% endblock %}
 
 {% block content %}
-
 <div class="container-fluid">
-
     <!-- Header -->
-
-    <div class="d-flex justify-content-between align-items-center mb-4">
-
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4 gap-3">
         <div>
-
-            <h2 class="fw-bold">
-
-                👤 My Profile
-
+            <h2 class="fw-bold mb-1">
+                <i class="fa-solid fa-user text-primary me-2"></i>My Profile
             </h2>
-
-            <p class="text-muted">
-
-                Manage your profile and view your productivity.
-
-            </p>
-
+            <p class="text-muted mb-0">Manage your profile and view your productivity.</p>
         </div>
-
-        <a
-            href="{% url 'edit_profile' %}"
-            class="btn btn-primary">
-
-            ✏️ Edit Profile
-
+        <a href="{% url 'edit_profile' %}" class="btn btn-primary">
+            <i class="fa-solid fa-edit me-2"></i>Edit Profile
         </a>
-
     </div>
 
-
-    <div class="row">
-
-        <!-- LEFT -->
-
+    <div class="row g-4">
+        <!-- LEFT COLUMN - Profile Card & About -->
         <div class="col-lg-4">
-
-            <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body text-center">
-
-                    {% if profile.profile_image %}
-
-                    <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}/media/profiles/default.png{% endif %}"
-                         class="rounded-circle shadow"
-                         width="180"
-                         height="180"
-                         style="object-fit:cover;">
-
-                    {% endif %}
-
-                    <h3 class="mt-3">
-
+            <!-- Profile Card -->
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-5 text-center">
+                    <div class="mb-4">
+                        <img src="{% if profile.profile_image %}{{ profile.profile_image.url }}{% else %}/media/profiles/default.png{% endif %}"
+                             class="rounded-circle shadow-lg"
+                             width="200"
+                             height="200"
+                             style="object-fit: cover;">
+                    </div>
+                    <h3 class="fw-bold mb-1">
                         {{ request.user.get_full_name|default:request.user.username }}
-
                     </h3>
-
-                    <p class="text-muted">
-
-                        {{ profile.degree }}
-
-                    </p>
-
-                    <hr>
-
+                    <p class="text-muted mb-4">{{ profile.degree|default:"" }}</p>
+                    
                     <div class="text-start">
-
-                        <p>
-
-                            📧 {{ request.user.email }}
-
-                        </p>
-
-                        <p>
-
-                            📱 {{ profile.phone|default:"Not Added" }}
-
-                        </p>
-
-                        <p>
-
-                            📍 {{ profile.location|default:"Not Added" }}
-
-                        </p>
-
-                        <p>
-
-                            🎓 {{ profile.college|default:"Not Added" }}
-
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <div class="card shadow border-0 rounded-4 mt-4">
-
-                <div class="card-body">
-
-                    <h5>
-
-                        📝 About Me
-
-                    </h5>
-
-                    <hr>
-
-                    {{ profile.bio|default:"No bio added." }}
-
-                </div>
-
-            </div>
-
-        </div>
-
-                <!-- RIGHT -->
-
-        <div class="col-lg-8">
-
-            <!-- Statistics -->
-
-            <div class="row">
-
-                <div class="col-md-3 mb-4">
-
-                    <div class="card shadow border-0 rounded-4">
-
-                        <div class="card-body text-center">
-
-                            <h6>
-
-                                📋 Total Tasks
-
-                            </h6>
-
-                            <h2>
-
-                                {{ total_tasks }}
-
-                            </h2>
-
+                        <div class="mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-envelope text-primary me-3" style="width: 20px;"></i>
+                            <span class="text-muted">{{ request.user.email }}</span>
                         </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-3 mb-4">
-
-                    <div class="card shadow border-0 rounded-4">
-
-                        <div class="card-body text-center">
-
-                            <h6>
-
-                                ✅ Completed
-
-                            </h6>
-
-                            <h2 class="text-success">
-
-                                {{ completed_tasks }}
-
-                            </h2>
-
+                        <div class="mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-phone text-primary me-3" style="width: 20px;"></i>
+                            <span class="text-muted">{{ profile.phone|default:"Not Added" }}</span>
                         </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-3 mb-4">
-
-                    <div class="card shadow border-0 rounded-4">
-
-                        <div class="card-body text-center">
-
-                            <h6>
-
-                                🟡 Pending
-
-                            </h6>
-
-                            <h2 class="text-warning">
-
-                                {{ pending_tasks }}
-
-                            </h2>
-
+                        <div class="mb-3 d-flex align-items-center">
+                            <i class="fa-solid fa-location-dot text-primary me-3" style="width: 20px;"></i>
+                            <span class="text-muted">{{ profile.location|default:"Not Added" }}</span>
                         </div>
-
-                    </div>
-
-                </div>
-
-                <div class="col-md-3 mb-4">
-
-                    <div class="card shadow border-0 rounded-4">
-
-                        <div class="card-body text-center">
-
-                            <h6>
-
-                                🚀 Productivity
-
-                            </h6>
-
-                            <h2 class="text-primary">
-
-                                {{ productivity }}%
-
-                            </h2>
-
+                        <div class="d-flex align-items-center">
+                            <i class="fa-solid fa-graduation-cap text-primary me-3" style="width: 20px;"></i>
+                            <span class="text-muted">{{ profile.college|default:"Not Added" }}</span>
                         </div>
-
                     </div>
-
                 </div>
-
             </div>
 
-
-
-            <!-- Productivity -->
-
-            <div class="card shadow border-0 rounded-4 mb-4">
-
-                <div class="card-body">
-
-                    <h5>
-
-                        📈 Productivity Score
-
-                    </h5>
-
-                    <hr>
-
-                    <div class="progress mb-3" style="height:20px;">
-
-                        <div
-
-                            class="progress-bar progress-bar-striped progress-bar-animated bg-success"
-
-                            style="width: {{ productivity }}%;">
-
-                            {{ productivity }}%
-
-                        </div>
-
-                    </div>
-
-                    {% if productivity >= 80 %}
-
-                    <div class="alert alert-success">
-
-                        🏆 Excellent Performance
-
-                    </div>
-
-                    {% elif productivity >= 50 %}
-
-                    <div class="alert alert-warning">
-
-                        👍 Good Progress
-
-                    </div>
-
-                    {% else %}
-
-                    <div class="alert alert-danger">
-
-                        💪 Keep Working
-
-                    </div>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Skills -->
-
-            <div class="card shadow border-0 rounded-4 mb-4">
-
-                <div class="card-body">
-
-                    <h5>
-
-                        💻 Skills
-
-                    </h5>
-
-                    <hr>
-
-                    <p>
-
-                        {{ profile.skills|default:"No skills added." }}
-
-                    </p>
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Links -->
-
-            <div class="card shadow border-0 rounded-4 mb-4">
-
-                <div class="card-body">
-
-                    <h5>
-
-                        🔗 Professional Links
-
-                    </h5>
-
-                    <hr>
-
-                    {% if profile.github %}
-
-                    <p>
-
-                        💻
-
-                        <a
-                            href="{{ profile.github }}"
-                            target="_blank">
-
-                            GitHub
-
-                        </a>
-
-                    </p>
-
-                    {% endif %}
-
-                    {% if profile.linkedin %}
-
-                    <p>
-
-                        💼
-
-                        <a
-                            href="{{ profile.linkedin }}"
-                            target="_blank">
-
-                            LinkedIn
-
-                        </a>
-
-                    </p>
-
-                    {% endif %}
-
-                    {% if profile.portfolio %}
-
-                    <p>
-
-                        🌐
-
-                        <a
-                            href="{{ profile.portfolio }}"
-                            target="_blank">
-
-                            Portfolio
-
-                        </a>
-
-                    </p>
-
-                    {% endif %}
-
-                </div>
-
-            </div>
-
-
-
-            <!-- Account -->
-
+            <!-- About Me -->
             <div class="card shadow border-0 rounded-4">
-
-                <div class="card-body">
-
-                    <h5>
-
-                        ℹ️ Account Information
-
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-file-lines text-primary me-2"></i>About Me
                     </h5>
-
-                    <hr>
-
-                    <table class="table">
-
-                        <tr>
-
-                            <th>Username</th>
-
-                            <td>
-
-                                {{ request.user.username }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>Email</th>
-
-                            <td>
-
-                                {{ request.user.email }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>Joined</th>
-
-                            <td>
-
-                                {{ request.user.date_joined|date:"d M Y" }}
-
-                            </td>
-
-                        </tr>
-
-                        <tr>
-
-                            <th>Last Login</th>
-
-                            <td>
-
-                                {{ request.user.last_login|date:"d M Y h:i A" }}
-
-                            </td>
-
-                        </tr>
-
-                    </table>
-
+                    <p class="text-muted">
+                        {{ profile.bio|default:"No bio added." }}
+                    </p>
                 </div>
-
             </div>
-
         </div>
 
+        <!-- RIGHT COLUMN - Stats & Details -->
+        <div class="col-lg-8">
+            <!-- Statistics Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 rounded-4 stat-card h-100">
+                        <div class="card-body p-4 text-center">
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                            </div>
+                            <h6 class="text-muted mb-1">Total Tasks</h6>
+                            <h2 class="fw-bold mb-0">{{ total_tasks }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 rounded-4 stat-card h-100">
+                        <div class="card-body p-4 text-center">
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                    <i class="fa-solid fa-check-double"></i>
+                                </div>
+                            </div>
+                            <h6 class="text-muted mb-1">Completed</h6>
+                            <h2 class="fw-bold mb-0 text-success">{{ completed_tasks }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 rounded-4 stat-card h-100">
+                        <div class="card-body p-4 text-center">
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+                            </div>
+                            <h6 class="text-muted mb-1">Pending</h6>
+                            <h2 class="fw-bold mb-0 text-warning">{{ pending_tasks }}</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card shadow-sm border-0 rounded-4 stat-card h-100">
+                        <div class="card-body p-4 text-center">
+                            <div class="d-flex justify-content-center mb-2">
+                                <div class="stat-icon bg-success bg-opacity-10 text-success">
+                                    <i class="fa-solid fa-trophy"></i>
+                                </div>
+                            </div>
+                            <h6 class="text-muted mb-1">Productivity</h6>
+                            <h2 class="fw-bold mb-0 text-primary">{{ productivity }}%</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productivity Score -->
+            <div class="card shadow border-0 rounded-4 mb-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-chart-line text-primary me-2"></i>Productivity Score
+                    </h5>
+                    <div class="progress mb-3" style="height: 20px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                             style="width: {{ productivity }}%;">
+                            {{ productivity }}%
+                        </div>
+                    </div>
+                    {% if productivity >= 80 %}
+                    <div class="alert alert-success d-flex align-items-center">
+                        <i class="fa-solid fa-trophy me-2"></i>Excellent Performance
+                    </div>
+                    {% elif productivity >= 50 %}
+                    <div class="alert alert-warning d-flex align-items-center">
+                        <i class="fa-solid fa-thumbs-up me-2"></i>Good Progress
+                    </div>
+                    {% else %}
+                    <div class="alert alert-danger d-flex align-items-center">
+                        <i class="fa-solid fa-fire me-2"></i>Keep Working
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Skills -->
+                <div class="col-md-6">
+                    <div class="card shadow border-0 rounded-4 h-100">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fa-solid fa-code text-primary me-2"></i>Skills
+                            </h5>
+                            <p class="text-muted mb-0">
+                                {{ profile.skills|default:"No skills added." }}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Social Links -->
+                <div class="col-md-6">
+                    <div class="card shadow border-0 rounded-4 h-100">
+                        <div class="card-body p-4">
+                            <h5 class="fw-bold mb-4">
+                                <i class="fa-solid fa-link text-primary me-2"></i>Professional Links
+                            </h5>
+                            <div class="d-flex flex-column gap-3">
+                                {% if profile.github %}
+                                <a href="{{ profile.github }}" target="_blank" 
+                                   class="text-decoration-none d-flex align-items-center">
+                                    <i class="fa-brands fa-github text-dark me-2 fa-xl"></i>
+                                    <span class="text-muted">GitHub</span>
+                                </a>
+                                {% endif %}
+                                {% if profile.linkedin %}
+                                <a href="{{ profile.linkedin }}" target="_blank" 
+                                   class="text-decoration-none d-flex align-items-center">
+                                    <i class="fa-brands fa-linkedin text-primary me-2 fa-xl"></i>
+                                    <span class="text-muted">LinkedIn</span>
+                                </a>
+                                {% endif %}
+                                {% if profile.portfolio %}
+                                <a href="{{ profile.portfolio }}" target="_blank" 
+                                   class="text-decoration-none d-flex align-items-center">
+                                    <i class="fa-solid fa-globe text-success me-2 fa-xl"></i>
+                                    <span class="text-muted">Portfolio</span>
+                                </a>
+                                {% endif %}
+                                {% if not profile.github and not profile.linkedin and not profile.portfolio %}
+                                <p class="text-muted mb-0">No links added.</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Information -->
+            <div class="card shadow border-0 rounded-4">
+                <div class="card-body p-4">
+                    <h5 class="fw-bold mb-4">
+                        <i class="fa-solid fa-info-circle text-primary me-2"></i>Account Information
+                    </h5>
+                    <table class="table table-borderless">
+                        <tr>
+                            <th style="width: 150px;">Username</th>
+                            <td class="text-muted">{{ request.user.username }}</td>
+                        </tr>
+                        <tr>
+                            <th>Email</th>
+                            <td class="text-muted">{{ request.user.email }}</td>
+                        </tr>
+                        <tr>
+                            <th>Joined</th>
+                            <td class="text-muted">{{ request.user.date_joined|date:"d M Y" }}</td>
+                        </tr>
+                        <tr>
+                            <th>Last Login</th>
+                            <td class="text-muted">{{ request.user.last_login|date:"d M Y h:i A" }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-
 </div>
-
 {% endblock %}
-
