@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'planner.apps.PlannerConfig',
     'analytics.apps.AnalyticsConfig',
-    'ai_assistant.apps.AiAssistantConfig',
     'calendar_app.apps.CalendarAppConfig',
 ]
 

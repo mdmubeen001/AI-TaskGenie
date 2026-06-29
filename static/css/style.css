@@ -1364,17 +1364,40 @@ body.dark-mode .chat-history-item:hover {
 }
 
 .chat-bubble {
-    transition: all 0.2s ease;
+    border-radius: 16px;
+    padding: 16px 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    line-height: 1.6;
+    /* Ensure no text clipping */
+    overflow: visible;
+    white-space: normal;
 }
 
 .user-bubble {
-    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
-    color: white;
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: #ffffff;
+    max-width: 70%;
+    min-width: 120px;
+    border-bottom-right-radius: 4px;
 }
 
 .ai-bubble {
     background: #ffffff;
-    color: #111827;
+    color: #0f172a;
+    max-width: 70%;
+    min-width: 120px; /* Removed fixed min-width to be flexible */
+    border-bottom-left-radius: 4px;
+}
+
+/* Message content specific styles */
+.message-content {
+    white-space: pre-wrap;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+    /* Ensure no clipping */
+    overflow: visible;
+    text-overflow: clip;
 }
 
 body.dark-mode .ai-bubble {
@@ -1382,32 +1405,30 @@ body.dark-mode .ai-bubble {
     color: #e2e8f0;
 }
 
-/* Typing Indicator */
-.typing-indicator {
-    display: flex;
-    gap: 4px;
-    padding: 10px 0;
+body.dark-mode .user-bubble {
+    box-shadow: 0 2px 12px rgba(59, 130, 246, 0.3);
 }
 
-.typing-indicator .dot {
-    width: 10px;
-    height: 10px;
+/* Typing Indicator */
+#typing .dot {
+    width: 8px;
+    height: 8px;
     border-radius: 50%;
     background: #94a3b8;
-    animation: bounce 1.4s infinite ease-in-out both;
+    animation: typingBounce 1.4s infinite ease-in-out both;
 }
 
-.typing-indicator .dot:nth-child(1) {
+#typing .dot:nth-child(1) {
     animation-delay: -0.32s;
 }
 
-.typing-indicator .dot:nth-child(2) {
+#typing .dot:nth-child(2) {
     animation-delay: -0.16s;
 }
 
-@keyframes bounce {
+@keyframes typingBounce {
     0%, 80%, 100% {
-        transform: scale(0.8);
+        transform: scale(0.7);
         opacity: 0.5;
     }
     40% {
@@ -1422,6 +1443,12 @@ body.dark-mode #chatBox {
 
 body.dark-mode .chat-history-item {
     border-color: #334155 !important;
+}
+
+/* Chat box container */
+#chatBox {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
 }
 
 /* Scrollbar for chat */
@@ -1457,13 +1484,22 @@ body.dark-mode #chatBox .text-muted {
 /* Responsive Chat */
 @media (max-width: 991.98px) {
     .chat-bubble {
-        max-width: 90% !important;
+        max-width: 85% !important;
+    }
+    .ai-bubble {
+        min-width: 240px !important;
     }
 }
 
 @media (max-width: 575.98px) {
     .chat-history-item {
         padding: 10px !important;
+    }
+    .ai-bubble {
+        min-width: 180px !important;
+    }
+    .chat-bubble {
+        padding: 12px 16px !important;
     }
 }
 
@@ -2495,6 +2531,79 @@ body.dark-mode .calendar-task-default {
 body.dark-mode .date-chip {
     background-color: #334155;
     color: #e2e8f0;
+}
+
+/* Chat Typing Animation */
+.dot {
+    width: 8px;
+    height: 8px;
+    background-color: #6b7280;
+    border-radius: 50%;
+    display: inline-block;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+.dot:nth-child(2) {
+    animation-delay: -0.32s;
+}
+.dot:nth-child(3) {
+    animation-delay: -0.16s;
+}
+@keyframes bounce {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.5;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Chat Bubbles */
+.user-bubble {
+    background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+    color: white;
+}
+.ai-bubble {
+    background-color: white;
+    border: 1px solid #e2e8f0;
+}
+body.dark-mode .ai-bubble {
+    background-color: #1e293b;
+    border-color: #334155;
+    color: #e2e8f0;
+}
+body.dark-mode #chatBox {
+    background-color: #0f172a !important;
+}
+
+/* Chat History Item */
+body.dark-mode .chat-history-item {
+    background-color: #1e293b;
+    border-color: #334155 !important;
+    color: #e2e8f0;
+}
+body.dark-mode .chat-history-item:hover {
+    background-color: #334155;
+}
+body.dark-mode .chat-history-item.bg-primary-subtle {
+    background-color: rgba(59, 130, 246, 0.15) !important;
+    border-color: #3b82f6 !important;
+}
+
+/* Chat Bubble Animation */
+.chat-bubble {
+    animation: fadeInUp 0.3s ease-out;
+}
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 body.dark-mode .date-chip:hover {

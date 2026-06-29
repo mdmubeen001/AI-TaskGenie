@@ -77,13 +77,13 @@ class LoginForm(forms.Form):
 
     username = forms.CharField(
 
-        label="Email or Username",
+        label="Username",
 
         widget=forms.TextInput(attrs={
 
             "class": "form-control",
 
-            "placeholder": "Enter Email or Username"
+            "placeholder": "Enter Username"
 
         })
 

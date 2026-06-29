@@ -8,7 +8,6 @@ from .forms import SignupForm, LoginForm, ProfileForm
 from .models import Profile
 
 from tasks.models import Task
-from ai_assistant.models import Chat
 # -------------------------
 # Signup
 # -------------------------
@@ -288,18 +287,6 @@ def delete_all_tasks(request):
 
     return redirect("settings")
 
-
-@login_required
-def delete_all_chats(request):
-
-    Chat.objects.filter(user=request.user).delete()
-
-    messages.success(
-        request,
-        "All AI chats deleted successfully."
-    )
-
-    return redirect("settings")
 
 @login_required
 def delete_account(request):

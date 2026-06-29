@@ -17,6 +17,5 @@ urlpatterns = [
 
     path("settings/", views.settings_page, name="settings"),
     path("delete-tasks/", views.delete_all_tasks, name="delete_all_tasks"),
-    path("delete-chats/", views.delete_all_chats, name="delete_all_chats"),  
     path("delete-account/", views.delete_account, name="delete_account"),  
 ]

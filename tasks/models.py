@@ -58,6 +58,23 @@ class Task(models.Model):
 
     deadline = models.DateField()
 
+    estimated_duration = models.IntegerField(
+        help_text="Estimated duration in minutes",
+        null=True,
+        blank=True
+    )
+
+    phase = models.CharField(
+        max_length=100,
+        null=True,
+        blank=True
+    )
+
+    order = models.IntegerField(
+        null=True,
+        blank=True
+    )
+
     created_at = models.DateTimeField(
 
         auto_now_add=True
@@ -69,6 +86,9 @@ class Task(models.Model):
         auto_now=True
 
     )
+
+    class Meta:
+        ordering = ["order", "created_at"]
 
     def __str__(self):
 

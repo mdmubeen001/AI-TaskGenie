@@ -1,226 +1,514 @@
-{% extends 'base_dashboard.html' %}
+{% extends "base_dashboard.html" %}
 
-{% block title %}AI Planner{% endblock %}
+{% block title %}AI Roadmap Planner{% endblock %}
 
 {% block content %}
-<div class="container-fluid">
-    <!-- Hero Section -->
-    <div class="card shadow border-0 rounded-4 mb-4">
-        <div class="card-body p-5 bg-gradient-primary" style="background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%); color: white;">
-            <h2 class="fw-bold mb-2">
-                <i class="fa-solid fa-brain me-2"></i>AI Productivity Planner
-            </h2>
-            <p class="mb-0 opacity-90">Transform your goals into intelligent, time-optimized daily schedules.</p>
-        </div>
-    </div>
-
-    <div class="row g-4">
-        <!-- Left Column - Planner Form -->
-        <div class="col-lg-5">
-            <!-- Planner Input Card -->
-            <div class="card shadow border-0 rounded-4">
-                <div class="card-header bg-light border-0 p-4">
-                    <h5 class="fw-bold mb-0">
-                        <i class="fa-solid fa-clipboard-list text-primary me-2"></i>Plan Your Day
-                    </h5>
+<div class="container mt-5">
+    <div class="row">
+        <!-- AI Planner Form -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">AI Roadmap Planner</h4>
                 </div>
-                <div class="card-body p-4">
-                    <form method="POST" id="plannerForm">
+                <div class="card-body">
+                    <p class="card-text text-muted">Describe your goal, and let our AI generate a step-by-step roadmap for you.</p>
+                    
+                    <!-- Main Form for generating the roadmap -->
+                    <form method="POST" action="{% url 'ai_planner' %}" id="planner-form">
                         {% csrf_token %}
-                        
-                        <!-- Goal -->
+
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fa-solid fa-bullseye text-primary me-2"></i>Goal
-                            </label>
-                            <input type="text" class="form-control" name="goal" required placeholder="e.g., Complete project milestone">
+                            <label for="goal" class="form-label">Primary Goal</label>
+                            <textarea class="form-control" id="goal" name="goal" rows="3" placeholder="e.g., Launch a new blog" required>{{ form_data.goal }}</textarea>
                         </div>
 
-                        <!-- Available Hours -->
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fa-solid fa-clock text-primary me-2"></i>Available Hours
-                            </label>
-                            <input type="number" class="form-control" name="available_hours" required min="1" max="24" placeholder="e.g., 8">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="available_hours" class="form-label">Hours/Week</label>
+                                <input type="number" class="form-control" id="available_hours" name="available_hours" placeholder="e.g., 10" value="{{ form_data.available_hours }}" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="deadline" class="form-label">Deadline</label>
+                                <input type="date" class="form-control" id="deadline" name="deadline" value="{{ form_data.deadline }}">
+                            </div>
                         </div>
 
-                        <div class="row g-3 mb-3">
-                            <!-- Priority -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <i class="fa-solid fa-flag text-primary me-2"></i>Priority
-                                </label>
-                                <select class="form-select" name="priority" required>
-                                    <option value="Low">Low</option>
-                                    <option value="Medium" selected>Medium</option>
-                                    <option value="High">High</option>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="priority" class="form-label">Priority</label>
+                                <select class="form-select" id="priority" name="priority">
+                                    <option value="High" {% if form_data.priority == 'High' %}selected{% endif %}>High</option>
+                                    <option value="Medium" {% if form_data.priority == 'Medium' %}selected{% endif %}>Medium</option>
+                                    <option value="Low" {% if form_data.priority == 'Low' %}selected{% endif %}>Low</option>
                                 </select>
                             </div>
-                            <!-- Energy Level -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <i class="fa-solid fa-bolt text-primary me-2"></i>Energy Level
-                                </label>
-                                <select class="form-select" name="energy_level" required>
-                                    <option value="Low">Low</option>
-                                    <option value="Medium" selected>Medium</option>
-                                    <option value="High">High</option>
+                            <div class="col-md-6 mb-3">
+                                <label for="energy_level" class="form-label">Energy Level</label>
+                                <select class="form-select" id="energy_level" name="energy_level">
+                                    <option value="High" {% if form_data.energy_level == 'High' %}selected{% endif %}>High</option>
+                                    <option value="Medium" {% if form_data.energy_level == 'Medium' %}selected{% endif %}>Medium</option>
+                                    <option value="Low" {% if form_data.energy_level == 'Low' %}selected{% endif %}>Low</option>
                                 </select>
                             </div>
                         </div>
 
-                        <div class="row g-3 mb-3">
-                            <!-- Deadline -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <i class="fa-solid fa-calendar-day text-primary me-2"></i>Deadline
-                                </label>
-                                <input type="date" class="form-control" name="deadline">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="break_duration" class="form-label">Break (mins)</label>
+                                <input type="number" class="form-control" id="break_duration" name="break_duration" value="{{ form_data.break_duration|default:'30' }}">
                             </div>
-                            <!-- Break Duration -->
-                            <div class="col-md-6">
-                                <label class="form-label fw-semibold">
-                                    <i class="fa-solid fa-mug-hot text-primary me-2"></i>Break Duration (min)
-                                </label>
-                                <input type="number" class="form-control" name="break_duration" min="5" max="60" value="30">
+                            <div class="col-md-6 mb-3">
+                                <label for="work_style" class="form-label">Work Style</label>
+                                <select class="form-select" id="work_style" name="work_style">
+                                    <option value="Focused" {% if form_data.work_style == 'Focused' %}selected{% endif %}>Focused</option>
+                                    <option value="Balanced" {% if form_data.work_style == 'Balanced' %}selected{% endif %}>Balanced</option>
+                                    <option value="Flexible" {% if form_data.work_style == 'Flexible' %}selected{% endif %}>Flexible</option>
+                                </select>
                             </div>
                         </div>
 
-                        <!-- Work Style -->
                         <div class="mb-3">
-                            <label class="form-label fw-semibold">
-                                <i class="fa-solid fa-user-gear text-primary me-2"></i>Work Style
-                            </label>
-                            <select class="form-select" name="work_style" required>
-                                <option value="Deep Work">Deep Work (Focus blocks)</option>
-                                <option value="Balanced" selected>Balanced (Mix of tasks)</option>
-                                <option value="Fast Execution">Fast Execution (Quick sprints)</option>
-                            </select>
-                        </div>
-
-                        <!-- Additional Notes -->
-                        <div class="mb-4">
-                            <label class="form-label fw-semibold">
-                                <i class="fa-solid fa-sticky-note text-primary me-2"></i>Additional Notes
-                            </label>
-                            <textarea class="form-control" name="prompt" rows="4" placeholder="e.g., Meetings at 2 PM, gym at 6 PM"></textarea>
+                            <label for="additional_notes" class="form-label">Additional Notes</label>
+                            <textarea class="form-control" id="additional_notes" name="additional_notes" rows="2" placeholder="Any other constraints or preferences?">{{ form_data.additional_notes }}</textarea>
                         </div>
 
                         <div class="d-flex gap-2">
-                            <button id="generateBtn" type="submit" class="btn btn-primary w-100">
-                                <i class="fa-solid fa-wand-magic-sparkles me-2"></i>Generate Plan
+                            <button type="submit" name="generate" value="1" class="btn btn-primary w-100" id="generate-btn">
+                                <span id="generate-btn-text">Generate Roadmap</span>
+                                <span id="generate-btn-spinner" class="spinner-border spinner-border-sm ms-2 d-none" role="status" aria-hidden="true"></span>
                             </button>
-                            <button id="clearBtn" type="button" class="btn btn-outline-secondary">
-                                <i class="fa-solid fa-eraser"></i>
-                            </button>
+                        </div>
+                        {% if generated_data %}
+                        <button type="submit" name="regenerate" value="1" class="btn btn-outline-warning w-100 mt-2">
+                            <i class="bi bi-arrow-clockwise"></i> Regenerate Roadmap
+                        </button>
+                        {% endif %}
+
+                    </form> <!-- End of the main form -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Generated Roadmap Display -->
+        <div class="col-lg-8">
+            {% if error %}
+                <div class="alert alert-danger">
+                    <strong>Error:</strong> {{ error }}
+                </div>
+            {% endif %}
+
+            {% if generated_data %}
+            <div class="card shadow-sm">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h4 class="mb-0">Generated Roadmap</h4>
+                </div>
+                <div class="card-body">
+                    <!-- Roadmap Progress Dashboard -->
+                    <div class="row g-3 mb-4">
+                        <div class="col-md-4">
+                            <div class="card shadow-sm bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0"><i class="bi bi-layers text-primary me-2"></i> {{ generated_data.phases|length }}</h5>
+                                    <p class="text-muted small mb-0">Total Phases</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0"><i class="bi bi-list-check text-success me-2"></i> {{ generated_data.tasks|length }}</h5>
+                                    <p class="text-muted small mb-0">Total Tasks</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card shadow-sm bg-light">
+                                <div class="card-body">
+                                    <h5 class="card-title mb-0" id="total-hours"><i class="bi bi-hourglass-split text-warning me-2"></i> 0</h5>
+                                    <p class="text-muted small mb-0">Estimated Hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Progress Bar -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <span class="fw-semibold"><i class="bi bi-activity text-primary me-2"></i> Progress</span>
+                            <span class="text-muted">0%</span>
+                        </div>
+                        <div class="progress" style="height: 12px;">
+                            <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <form method="POST" action="{% url 'ai_planner' %}" id="roadmap-form">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <div class="fw-semibold">
+                                <i class="bi bi-check2-circle text-primary me-2"></i>Selected: <span id="selected-count">0</span> tasks
+                            </div>
+                            <div class="d-flex gap-2">
+                                <button type="button" id="approve-all-btn" class="btn btn-success btn-sm">
+                                    <i class="bi bi-check-circle"></i> Approve All
+                                </button>
+                                <button type="button" id="approve-selected-btn" class="btn btn-info btn-sm text-white" disabled>
+                                    <i class="bi bi-check2-square"></i> Approve Selected
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Modern Timeline -->
+                        <div class="mb-3 d-flex justify-content-end align-items-center gap-2">
+                            <input class="form-check-input" type="checkbox" id="selectAllTasks">
+                            <label class="form-check-label" for="selectAllTasks"><strong>Select All Tasks</strong></label>
+                        </div>
+                        <div class="timeline">
+                            {% for phase in generated_data.phases %}
+                            <div class="timeline-item mb-5">
+                                <!-- Timeline Dot & Connection -->
+                                <div class="timeline-marker d-flex flex-column align-items-center">
+                                    <div class="timeline-dot bg-primary"></div>
+                                    {% if not forloop.last %}
+                                        <div class="timeline-line bg-secondary" style="flex: 1; width: 3px;"></div>
+                                    {% endif %}
+                                </div>
+
+                                <!-- Phase Card -->
+                                <div class="timeline-content w-100">
+                                    <div class="card mb-3 shadow-sm">
+                                        <div class="card-body">
+                                            <h5 class="card-title d-flex align-items-center gap-2">
+                                                <i class="bi bi-folder2-open text-primary"></i>
+                                                {{ phase.name }}
+                                            </h5>
+                                            <p class="text-muted mb-3">{{ phase.description }}</p>
+
+                                            <!-- Phase Tasks -->
+                                            <div class="tasks-container">
+                                                {% for task in generated_data.tasks %}
+                                                    {% if task.phase == phase.name %}
+                                                    <div class="task-item d-flex align-items-start gap-3 py-2 px-3 bg-light rounded mb-2 rounded-3" 
+                                                         data-duration="{{ task.estimated_duration }}" 
+                                                         data-deadline="{{ task.suggested_deadline }}"
+                                                         data-priority="{{ task.priority }}">
+                                                        <input class="form-check-input mt-2" type="checkbox" name="selected_tasks" value="{{ forloop.counter0 }}">
+                                                        <div class="flex-grow-1">
+                                                            <div class="d-flex justify-content-between align-items-center">
+                                                                <strong>{{ task.title }}</strong>
+                                                                <div class="d-flex gap-2 align-items-center">
+                                                                    {% if task.priority == 'High' %}
+                                                                        <span class="badge bg-danger"><i class="bi bi-exclamation-triangle"></i> High</span>
+                                                                    {% elif task.priority == 'Medium' %}
+                                                                        <span class="badge bg-warning text-dark"><i class="bi bi-dash-circle"></i> Medium</span>
+                                                                    {% else %}
+                                                                        <span class="badge bg-success"><i class="bi bi-check-circle"></i> Low</span>
+                                                                    {% endif %}
+                                                                </div>
+                                                            </div>
+                                                            {% if task.description %}
+                                                            <p class="text-muted small mb-1">{{ task.description }}</p>
+                                                            {% endif %}
+                                                            <div class="d-flex gap-3 text-muted small">
+                                                                <span><i class="bi bi-clock"></i> {{ task.estimated_duration }} mins</span>
+                                                                <span><i class="bi bi-calendar"></i> {{ task.suggested_deadline }}</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
                         </div>
                     </form>
                 </div>
             </div>
-        </div>
-
-        <!-- Right Column - AI Output -->
-        <div class="col-lg-7">
-            <!-- AI Recommendation Panel -->
-            <div class="card shadow border-0 rounded-4 mb-4">
-                <div class="card-header bg-light border-0 d-flex justify-content-between align-items-center p-4">
-                    <h5 class="fw-bold mb-0">
-                        <i class="fa-solid fa-robot text-primary me-2"></i>AI Recommendations
-                    </h5>
-                    <div class="d-flex gap-2">
-                        <button id="copyBtn" class="btn btn-sm btn-outline-primary">
-                            <i class="fa-solid fa-copy"></i>
-                        </button>
-                        <button id="printBtn" class="btn btn-sm btn-outline-primary">
-                            <i class="fa-solid fa-print"></i>
-                        </button>
-                        <button id="exportBtn" class="btn btn-sm btn-outline-primary" disabled>
-                            <i class="fa-solid fa-download"></i>
-                        </button>
-                    </div>
+            {% elif latest_plan %}
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Previous Roadmap</h4>
                 </div>
-                <div class="card-body p-4" id="aiResponseContainer">
-                    {% if response %}
-                        <div id="aiResponse" class="bg-light rounded-3 p-4" style="white-space: pre-wrap; line-height: 1.8;">
-                            {{ response }}
-                        </div>
-                    {% else %}
-                        <div class="text-center py-5 text-muted">
-                            <i class="fa-solid fa-lightbulb fa-3x mb-3 opacity-50"></i>
-                            <h6 class="fw-semibold mb-1">Your plan will appear here</h6>
-                            <p class="mb-0 small">Fill out the form and click Generate Plan</p>
-                        </div>
-                    {% endif %}
+                <div class="card-body">
+                    <p>No new roadmap has been generated. Here is your most recent plan from <strong>{{ latest_plan.created_at }}</strong>.</p>
+                    <p>Fill out the form and click "Generate Roadmap" to create a new one.</p>
                 </div>
             </div>
-
-            <!-- Productivity Summary -->
-            {% if response %}
-                <div class="card shadow border-0 rounded-4">
-                    <div class="card-header bg-light border-0 p-4">
-                        <h5 class="fw-bold mb-0">
-                            <i class="fa-solid fa-chart-line text-primary me-2"></i>Productivity Summary
-                        </h5>
-                    </div>
-                    <div class="card-body p-4">
-                        <div class="row g-3">
-                            <div class="col-md-4 col-6">
-                                <div class="p-3 bg-light rounded-3 text-center">
-                                    <i class="fa-solid fa-list-check text-primary mb-1 fa-2x"></i>
-                                    <h4 class="fw-bold mb-0">4</h4>
-                                    <p class="text-muted mb-0 small">Total Tasks</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-6">
-                                <div class="p-3 bg-light rounded-3 text-center">
-                                    <i class="fa-solid fa-brain text-primary mb-1 fa-2x"></i>
-                                    <h4 class="fw-bold mb-0">3h</h4>
-                                    <p class="text-muted mb-0 small">Deep Work</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4 col-12">
-                                <div class="p-3 bg-light rounded-3 text-center">
-                                    <i class="fa-solid fa-star text-primary mb-1 fa-2x"></i>
-                                    <h4 class="fw-bold mb-0">85</h4>
-                                    <p class="text-muted mb-0 small">Focus Score</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            {% else %}
+            <div class="card shadow-sm">
+                <div class="card-header">
+                    <h4 class="mb-0">Welcome</h4>
                 </div>
+                <div class="card-body text-center">
+                    <i class="bi bi-lightbulb-fill" style="font-size: 3rem; color: #6c757d;"></i>
+                    <p class="mt-3">Your generated roadmap will appear here.</p>
+                    <p class="text-muted">Fill out the form on the left to get started.</p>
+                </div>
+            </div>
             {% endif %}
         </div>
     </div>
 </div>
 
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmModalLabel">Confirm Approval</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="confirmModalBody">
+                Are you sure you want to approve these tasks?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="confirmBtn">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    <div id="successToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-header">
+            <i class="bi bi-check-circle-fill text-success me-2"></i>
+            <strong class="me-auto">Success!</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body" id="toastBody">
+            Tasks approved successfully!
+        </div>
+    </div>
+</div>
+
+<style>
+/* Timeline Styles */
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+.timeline-item {
+    display: flex;
+    gap: 20px;
+}
+.timeline-marker {
+    min-width: 50px;
+}
+.timeline-dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px #0d6efd;
+}
+.timeline-content {
+    flex-grow: 1;
+}
+.task-item {
+    border-left: 4px solid transparent;
+}
+.task-item:hover {
+    border-left: 4px solid #0d6efd;
+    background: #f0f8ff;
+}
+.task-item.selected {
+    border-left: 4px solid #198754;
+    background: #d1e7dd;
+}
+</style>
+
 <script>
-// Loading Button
-document.getElementById('plannerForm').addEventListener('submit', function() {
-    const btn = document.getElementById('generateBtn');
-    btn.disabled = true;
-    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Generating Plan...';
-});
+document.addEventListener('DOMContentLoaded', function () {
+    // Tooltip initialization
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+    });
 
-// Clear Button
-document.getElementById('clearBtn').addEventListener('click', function() {
-    document.getElementById('plannerForm').reset();
-});
+    // Calculate and update dashboard
+    const taskItems = document.querySelectorAll('.task-item');
+    let totalMinutes = 0;
+    let totalTasks = 0;
 
-// Copy Plan
-document.getElementById('copyBtn').addEventListener('click', function() {
-    const aiResponse = document.getElementById('aiResponse');
-    if (aiResponse) {
-        navigator.clipboard.writeText(aiResponse.innerText);
-        this.innerHTML = '<i class="fa-solid fa-check"></i>';
-        setTimeout(() => {
-            this.innerHTML = '<i class="fa-solid fa-copy"></i>';
-        }, 2000);
+    taskItems.forEach(function (item) {
+        const duration = parseInt(item.dataset.duration);
+        if (!isNaN(duration)) {
+            totalMinutes += duration;
+        }
+        totalTasks++;
+    });
+
+    const totalHours = (totalMinutes / 60).toFixed(1);
+    const totalHoursElement = document.getElementById('total-hours');
+    if (totalHoursElement) {
+        totalHoursElement.innerHTML = '<i class="bi bi-hourglass-split text-warning me-2"></i> ' + totalHours;
     }
-});
 
-// Print Plan
-document.getElementById('printBtn').addEventListener('click', function() {
-    window.print();
+    // --- Generate Once Behavior ---
+    const plannerForm = document.getElementById('planner-form');
+    const generateBtn = document.getElementById('generate-btn');
+    const generateBtnText = document.getElementById('generate-btn-text');
+    const generateBtnSpinner = document.getElementById('generate-btn-spinner');
+    const inputFields = plannerForm.querySelectorAll('input, select, textarea');
+    const roadmapGenerated = {% if generated_data %}true{% else %}false{% endif %};
+    
+    // Store original form values
+    let originalValues = {};
+    inputFields.forEach(function (field) {
+        if (field.name !== 'generate' && field.name !== 'regenerate' && field.name !== 'csrfmiddlewaretoken') {
+            originalValues[field.name] = field.value;
+        }
+    });
+
+    // Check if form has changed
+    function hasFormChanged() {
+        let changed = false;
+        inputFields.forEach(function (field) {
+            if (field.name !== 'generate' && field.name !== 'regenerate' && field.name !== 'csrfmiddlewaretoken') {
+                if (originalValues[field.name] !== field.value) {
+                    changed = true;
+                }
+            }
+        });
+        return changed;
+    }
+
+    // Set initial button state
+    function setButtonState() {
+        if (roadmapGenerated && !hasFormChanged()) {
+            generateBtn.disabled = true;
+            generateBtn.classList.remove('btn-primary');
+            generateBtn.classList.add('btn-success');
+            generateBtnText.innerHTML = '<i class="bi bi-check-circle me-2"></i>Roadmap Generated';
+        } else {
+            generateBtn.disabled = false;
+            generateBtn.classList.remove('btn-success');
+            generateBtn.classList.add('btn-primary');
+            generateBtnText.textContent = 'Generate Roadmap';
+        }
+    }
+
+    // Set initial state
+    setButtonState();
+
+    // Attach input change listeners
+    inputFields.forEach(function (field) {
+        field.addEventListener('input', setButtonState);
+        field.addEventListener('change', setButtonState);
+    });
+
+    // Form submit listener for loading state
+    plannerForm.addEventListener('submit', function (e) {
+        const submitter = e.submitter;
+        if (submitter && submitter.name === 'generate') {
+            generateBtn.disabled = true;
+            generateBtnSpinner.classList.remove('d-none');
+            generateBtnText.textContent = 'Generating Roadmap...';
+        }
+    });
+
+    // --- End Generate Once ---
+
+    // Select all tasks and manage selected state
+    const selectAllCheckbox = document.getElementById('selectAllTasks');
+    const taskCheckboxes = document.querySelectorAll('input[name="selected_tasks"]');
+    const selectedCount = document.getElementById('selected-count');
+    const approveSelectedBtn = document.getElementById('approve-selected-btn');
+    const approveAllBtn = document.getElementById('approve-all-btn');
+    const roadmapForm = document.getElementById('roadmap-form');
+    let approveMode = null;
+
+    // Initialize approve buttons and counters
+    function updateSelection() {
+        let count = 0;
+        taskCheckboxes.forEach(function (checkbox) {
+            const taskItem = checkbox.closest('.task-item');
+            if (checkbox.checked) {
+                count++;
+                if (taskItem) {
+                    taskItem.classList.add('selected');
+                }
+            } else {
+                if (taskItem) {
+                    taskItem.classList.remove('selected');
+                }
+            }
+        });
+        if (selectedCount) {
+            selectedCount.textContent = count;
+        }
+        if (approveSelectedBtn) {
+            approveSelectedBtn.disabled = count === 0;
+        }
+        if (selectAllCheckbox) {
+            selectAllCheckbox.checked = count === taskCheckboxes.length && taskCheckboxes.length > 0;
+        }
+    }
+
+    // Attach event listeners to task checkboxes
+    taskCheckboxes.forEach(function (checkbox) {
+        checkbox.addEventListener('change', updateSelection);
+    });
+
+    if (selectAllCheckbox) {
+        selectAllCheckbox.addEventListener('change', function () {
+            taskCheckboxes.forEach(function (checkbox) {
+                checkbox.checked = selectAllCheckbox.checked;
+            });
+            updateSelection();
+        });
+    }
+
+    // Initialize selection state
+    updateSelection();
+
+    // Modal setup
+    const confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+    const confirmModalBody = document.getElementById('confirmModalBody');
+    const confirmBtn = document.getElementById('confirmBtn');
+    const successToast = new bootstrap.Toast(document.getElementById('successToast'));
+
+    if (approveAllBtn) {
+        approveAllBtn.addEventListener('click', function () {
+            approveMode = 'all';
+            confirmModalBody.textContent = 'Are you sure you want to approve all ' + totalTasks + ' tasks?';
+            confirmModal.show();
+        });
+    }
+
+    if (approveSelectedBtn) {
+        approveSelectedBtn.addEventListener('click', function () {
+            const count = document.querySelectorAll('input[name="selected_tasks"]:checked').length;
+            approveMode = 'selected';
+            confirmModalBody.textContent = 'Are you sure you want to approve ' + count + ' selected task(s)?';
+            confirmModal.show();
+        });
+    }
+
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function () {
+            // Create a hidden input for approve action
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            if (approveMode === 'all') {
+                input.name = 'approve_all';
+            } else {
+                input.name = 'approve_selected';
+            }
+            input.value = '1';
+            roadmapForm.appendChild(input);
+            // Submit the form
+            roadmapForm.submit();
+            // Show success toast
+            successToast.show();
+        });
+    }
 });
 </script>
 {% endblock %}
