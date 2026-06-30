@@ -35,15 +35,8 @@
                 AI TaskGenie
             </a>
 
-            <!-- Toggle Button -->
-            <button class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
+            <!-- Desktop: Original Navbar Structure -->
+            <div class="navbar-collapse collapse show desktop-collapse">
                 <!-- Left Side -->
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
@@ -65,6 +58,28 @@
                             <i class="fa-solid fa-moon"></i>
                         </button>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link fw-semibold" href="{% url 'login' %}">
+                            <i class="fa-solid fa-right-to-bracket me-1"></i>
+                            Login
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="btn btn-primary fw-semibold px-4 rounded-pill" href="{% url 'signup' %}">
+                            <i class="fa-solid fa-user-plus me-1"></i>
+                            Sign Up
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Mobile: Logo and Auth Buttons (no hamburger) -->
+            <div class="mobile-nav">
+                <a class="navbar-brand fw-bold mobile-logo" href="{% url 'home' %}">
+                    <i class="fa-solid fa-robot text-primary me-2"></i>
+                    AI TaskGenie
+                </a>
+                <ul class="navbar-nav align-items-center gap-2 mobile-auth-buttons">
                     <li class="nav-item">
                         <a class="nav-link fw-semibold" href="{% url 'login' %}">
                             <i class="fa-solid fa-right-to-bracket me-1"></i>

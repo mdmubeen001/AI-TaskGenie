@@ -3,12 +3,13 @@
 {% block title %}AI Roadmap Planner{% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="row">
-        <div class="col-lg-4">
-            <div class="card shadow-sm">
+<div class="container-fluid px-lg-5 px-4 py-4">
+    <h1 class="page-title mb-4">AI Roadmap Planner</h1>
+    <div class="row g-4">
+        <div class="col-12 col-lg-4">
+            <div class="card planner-card">
                 <div class="card-header">
-                    <h4 class="mb-0">AI Roadmap Planner</h4>
+                    <h4 class="mb-0">Generate a Roadmap</h4>
                 </div>
                 <div class="card-body">
                     <p class="card-text text-muted">Describe your goal, and let our AI generate a step-by-step roadmap for you.</p>
@@ -87,7 +88,7 @@
             </div>
         </div>
 
-        <div class="col-lg-8">
+        <div class="col-12 col-lg-8">
             {% if error %}
                 <div class="alert alert-warning">
                     {{ error }}
@@ -95,7 +96,7 @@
             {% endif %}
 
             {% if generated_data %}
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center gap-2">
                             <h4 class="mb-0">Generated Roadmap</h4>
@@ -107,7 +108,7 @@
                     <div class="card-body">
                         <div class="row g-3 mb-4">
                             <div class="col-md-4">
-                                <div class="card shadow-sm bg-light">
+                                <div class="card stat-card">
                                     <div class="card-body">
                                         <h5 class="card-title mb-0"><i class="bi bi-layers text-primary me-2"></i> {{ generated_data.phases|length }}</h5>
                                         <p class="text-muted small mb-0">Total Phases</p>
@@ -115,7 +116,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card shadow-sm bg-light">
+                                <div class="card stat-card">
                                     <div class="card-body">
                                         <h5 class="card-title mb-0"><i class="bi bi-list-check text-success me-2"></i> {{ generated_data.tasks|length }}</h5>
                                         <p class="text-muted small mb-0">Total Tasks</p>
@@ -123,7 +124,7 @@
                                 </div>
                             </div>
                             <div class="col-md-4">
-                                <div class="card shadow-sm bg-light">
+                                <div class="card stat-card">
                                     <div class="card-body">
                                         <h5 class="card-title mb-0" id="total-hours"><i class="bi bi-hourglass-split text-warning me-2"></i> 0</h5>
                                         <p class="text-muted small mb-0">Estimated Hours</p>
@@ -137,7 +138,7 @@
                                 <span class="fw-semibold"><i class="bi bi-activity text-primary me-2"></i> Progress</span>
                                 <span class="text-muted">0%</span>
                             </div>
-                            <div class="progress" style="height: 12px;">
+                            <div class="progress">
                                 <div class="progress-bar bg-primary" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
                         </div>
@@ -181,7 +182,7 @@
                                         </div>
 
                                         <div class="timeline-content w-100">
-                                            <div class="card mb-3 shadow-sm">
+                                            <div class="card mb-3">
                                                 <div class="card-body">
                                                     <h5 class="card-title d-flex align-items-center gap-2">
                                                         <i class="bi bi-folder2-open text-primary"></i>
@@ -232,7 +233,7 @@
                     </div>
                 </div>
             {% else %}
-                <div class="card shadow-sm">
+                <div class="card">
                     <div class="card-header">
                         <h4 class="mb-0">Welcome</h4>
                     </div>

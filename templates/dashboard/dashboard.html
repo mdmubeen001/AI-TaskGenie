@@ -4,13 +4,13 @@
 
 {% block content %}
 
-<div class="container-fluid py-4">
+<div class="container-fluid px-lg-5 px-4 py-4">
 
     <!-- Welcome Card -->
     <div class="card shadow border-0 rounded-4 mb-4 welcome-card">
-        <div class="card-body p-5">
-            <div class="row align-items-center">
-                <div class="col-md-8">
+        <div class="card-body p-4 p-md-5">
+            <div class="row align-items-center g-3">
+                <div class="col-12 col-md-8">
                     <h2 class="fw-bold mb-2">
                         <i class="fa-solid fa-hand-wave text-primary me-2"></i> Welcome back, {{ request.user.first_name }}!
                     </h2>
@@ -18,8 +18,8 @@
                         Stay focused, complete your tasks and let AI organize your day.
                     </p>
                 </div>
-                <div class="col-md-4 text-end">
-                    <a href="{% url 'add_task' %}" class="btn btn-primary btn-lg px-5 py-3">
+                <div class="col-12 col-md-4 text-md-end">
+                    <a href="{% url 'add_task' %}" class="btn btn-primary btn-lg px-5 py-3 w-100 w-md-auto">
                         <i class="fa-solid fa-plus me-2"></i> Add Task
                     </a>
                 </div>
@@ -29,60 +29,60 @@
 
     <!-- Statistics Cards -->
     <div class="row g-4 mb-4">
-        <div class="col-md-3">
+        <div class="col-12 col-md-3">
             <div class="card shadow-sm border-0 rounded-4 stat-card stat-total">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="min-w-0">
                             <h6 class="text-muted mb-1">Total Tasks</h6>
                             <h2 class="fw-bold">{{ total_tasks }}</h2>
                         </div>
-                        <div class="stat-icon bg-primary bg-opacity-10 text-primary">
+                        <div class="stat-icon bg-primary bg-opacity-10 text-primary flex-shrink-0">
                             <i class="fa-solid fa-list-check fa-xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-md-3">
             <div class="card shadow-sm border-0 rounded-4 stat-card stat-pending">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="min-w-0">
                             <h6 class="text-muted mb-1">Pending</h6>
                             <h2 class="fw-bold text-warning">{{ pending_tasks }}</h2>
                         </div>
-                        <div class="stat-icon bg-warning bg-opacity-10 text-warning">
+                        <div class="stat-icon bg-warning bg-opacity-10 text-warning flex-shrink-0">
                             <i class="fa-solid fa-clock fa-xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-md-3">
             <div class="card shadow-sm border-0 rounded-4 stat-card stat-completed">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="min-w-0">
                             <h6 class="text-muted mb-1">Completed</h6>
                             <h2 class="fw-bold text-success">{{ completed_tasks }}</h2>
                         </div>
-                        <div class="stat-icon bg-success bg-opacity-10 text-success">
+                        <div class="stat-icon bg-success bg-opacity-10 text-success flex-shrink-0">
                             <i class="fa-solid fa-check-double fa-xl"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-12 col-md-3">
             <div class="card shadow-sm border-0 rounded-4 stat-card stat-high">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div>
+                        <div class="min-w-0">
                             <h6 class="text-muted mb-1">High Priority</h6>
                             <h2 class="fw-bold text-danger">{{ high_priority_tasks }}</h2>
                         </div>
-                        <div class="stat-icon bg-danger bg-opacity-10 text-danger">
+                        <div class="stat-icon bg-danger bg-opacity-10 text-danger flex-shrink-0">
                             <i class="fa-solid fa-flag fa-xl"></i>
                         </div>
                     </div>
@@ -93,7 +93,7 @@
 
     <!-- Main Content Row -->
     <div class="row g-4 mb-4">
-        <div class="col-lg-8">
+        <div class="col-12 col-lg-8">
             <div class="card shadow border-0 rounded-4">
                 <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -177,7 +177,7 @@
         </div>
 
         <!-- Right Column: AI & Productivity -->
-        <div class="col-lg-4">
+        <div class="col-12 col-lg-4">
             <!-- Productivity Card -->
             <div class="card shadow border-0 rounded-4 mb-4">
                 <div class="card-body p-4">
