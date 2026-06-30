@@ -28,6 +28,14 @@ class Task(models.Model):
 
     )
 
+    roadmap = models.ForeignKey(
+        "planner.Roadmap",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="related_tasks"
+    )
+
     title = models.CharField(
 
         max_length=200
@@ -56,7 +64,7 @@ class Task(models.Model):
 
     )
 
-    deadline = models.DateField()
+    deadline = models.DateField(null=True, blank=True)
 
     estimated_duration = models.IntegerField(
         help_text="Estimated duration in minutes",
