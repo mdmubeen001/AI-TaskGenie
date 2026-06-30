@@ -179,16 +179,77 @@ Analytics & Progress Tracking
 
 ---
 
-## 📸 Screenshots
+# 📸 Application Screenshots
 
-> Add screenshots here after uploading them.
+## 🏠 Home Page
 
-- Home Page
-- Dashboard
-- AI Roadmap
-- Calendar
-- Analytics
-- Task Manager
+![Home](screenshots/home.png)
+
+---
+
+## 🔐 Login
+
+![Login](screenshots/login.png)
+
+---
+
+## 📝 Signup
+
+![Signup](screenshots/signup.png)
+
+---
+
+## 📊 Dashboard
+
+![Dashboard](screenshots/dashboard%20(2).png)
+
+---
+
+## ➕ Add Task
+
+![Add Task](screenshots/add_task.png)
+
+---
+
+## 🤖 AI Planner
+
+![Planner](screenshots/planner.png)
+
+---
+
+## 🛣️ AI Roadmap
+
+![Roadmap](screenshots/roadmap.png)
+
+---
+
+## 📅 Calendar
+
+![Calendar](screenshots/calendar.png)
+
+---
+
+## 📈 Analytics
+
+![Analytics](screenshots/analytics%20(2).png)
+
+---
+
+## 👤 Profile
+
+![Profile](screenshots/profile.png)
+
+---
+
+## ⚙️ Settings
+
+![Settings](screenshots/setting.png)
+
+---
+
+## ✅ Tasks
+
+![Tasks](screenshots/tasks.png)
 
 ---
 
